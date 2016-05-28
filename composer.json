@@ -1,7 +1,7 @@
 {
     "name": "tnqsoft/admin-bundle",
     "license": "MIT",
-    "type": "project",
+    "type": "symfony-bundle",
     "description": "TNQSoft Admin Bundle for Symfony 3",
     "keywords": ["admin", "symfony 3"],
     "authors": [
