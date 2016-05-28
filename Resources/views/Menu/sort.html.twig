@@ -1,0 +1,77 @@
+{% extends 'TNQSoftAdminBundle::layout.html.twig' %}
+
+{######################################################################################################################}
+{% block javascripts %}
+<script>
+    $('ol.sortable').nestedSortable({
+        handle: 'div.handle',
+        items: 'li',
+        toleranceElement: '> div',
+        helper:	'clone',
+        opacity: .6,
+        maxLevels: 3,
+        isTree: true,
+        forcePlaceholderSize: true,
+        placeholder: 'placeholder',
+        protectRoot: true,
+        excludeRoot: true
+    });
+</script>
+{% endblock %}
+{######################################################################################################################}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>Menu
+                <small>Sắp xếp</small>
+            </h1>
+        </div>
+
+        <form action="" method="post" onsubmit="return menuSort();">
+            <input type="hidden" name="listItems" value="" />
+            <p class="text-right">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-save"></i> Ghi nhớ
+                </button>
+                <a href="{{ path('admin_menu_list') }}" class="btn btn-default">
+                    <i class="fa fa-reply"></i>
+                    Quay lại
+                </a>
+            </p>
+
+            {% include 'TNQSoftAdminBundle:Partials:flash_message.html.twig' %}
+
+            <div class="sortable-box">
+            {% if menus %}
+                <ol class="sortable">
+                    {% for menu in menus %}
+                        {{ _self.recursiveMenus(menu) }}
+                    {% endfor %}
+                </ol>
+            {% endif %}
+            </div>
+
+        </form>
+
+    </div>
+    <!-- /container -->
+{% endblock %}
+
+{######################################################################################################################}
+
+{% macro recursiveMenus(menu) %}
+    <li id="menuItem_{{ menu.id }}" {% if menu.isActive == false %}class="deactive"{% endif %}>
+        <div class="row sortable-item">
+            <div class="handle"><i class="fa fa-bars"></i></div>
+            <div class="title">{{ menu.title }}</div>
+        </div>
+        {% if menu.__children|length > 0 %}
+            <ol>
+                {% for child in menu.__children %}
+                    {{ _self.recursiveMenus(child) }}
+                {% endfor %}
+            </ol>
+        {% endif %}
+    </li>
+{% endmacro %}

@@ -1,0 +1,12 @@
+{% stylesheets
+    'bundles/tnqsoftadmin/vendor/bootstrap/css/bootstrap.min.css'
+    'bundles/tnqsoftadmin/vendor/bootstrap/css/bootstrap-theme.min.css'
+    'bundles/tnqsoftadmin/vendor/font-awesome/css/font-awesome.min.css'
+    '@TNQSoftAdminBundle/Resources/public/vendor/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css'
+    '@TNQSoftAdminBundle/Resources/public/vendor/summernote/summernote.css'
+    '@TNQSoftAdminBundle/Resources/public/css/admin.css'
+    filter='cssrewrite'
+    output='css/compiled/admin-base.css'
+%}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="screen" />
+{% endstylesheets %}

@@ -1,0 +1,75 @@
+{% form_theme form 'TNQSoftAdminBundle:Form:form_layout.html.twig' %}
+
+{{ form_start(form) }}
+<p class="text-right">
+
+    {{ form_row(form.saveAndAdd) }}
+    {{ form_row(form.save) }}
+    <a href="{{ path('admin_product_list') }}" class="btn btn-default">
+        <i class="fa fa-reply"></i>
+        Quay lại
+    </a>
+</p>
+
+{% include 'TNQSoftAdminBundle:Partials:flash_message.html.twig' %}
+
+{{ form_errors(form) }}
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active">
+        <a href="#basic" aria-controls="basic" role="tab" data-toggle="tab">Thông tin cơ bản</a>
+    </li>
+    <li role="presentation">
+        <a href="#linked" aria-controls="linked" role="tab" data-toggle="tab">Liên kết</a>
+    </li>
+    <li role="presentation">
+        <a href="#photo" aria-controls="photo" role="tab" data-toggle="tab">Ảnh sản phẩm</a>
+    </li>
+</ul>
+<!-- Tab panes -->
+<div class="tab-content product-tab">
+    <div role="tabpanel" class="tab-pane active" id="basic">
+        {{ form_row(form.upc) }}
+        {{ form_row(form.price) }}
+        {{ form_row(form.title) }}
+        {{ form_row(form.summary) }}
+        {{ form_row(form.content) }}
+
+        {% if entity.id is not null %}
+            <div class="form-group">
+                <label class="col-sm-2 control-label">{{ 'Created At'|trans }}:</label>
+                <div class="col-sm-10">{{ entity.createdAt|date('Y-m-d H:i:s')}}</div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            {% if entity.updatedAt is not null %}
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ 'Updated At'|trans }}:</label>
+                    <div class="col-sm-10">{{ entity.updatedAt|date('Y-m-d H:i:s')}}</div>
+                </div>
+                <div class="hr-line-dashed"></div>
+            {% endif %}
+        {% endif %}
+    </div><!-- /#basic -->
+
+    <div role="tabpanel" class="tab-pane" id="linked">
+        {{ form_row(form.category) }}
+        {{ form_row(form.partner) }}
+        {{ form_row(form.outOfStock) }}
+        {{ form_row(form.isActive) }}
+    </div><!-- /#linked -->
+
+    <div role="tabpanel" class="tab-pane" id="photo">
+        <button type="button" id="btnAddProductPhoto" class="btn btn-primary">
+            <i class="fa fa-photo"></i>
+            Thêm ảnh
+        </button>
+        <div id="listProductPhotos" data-index="{{ form.listPhoto.vars.value|length }}" data-prototype="{{ form_widget(form.listPhoto.vars.prototype)|e }}">
+            <div id="product_listPhoto_content" class="row">
+            {{ form_widget(form.listPhoto) }}
+            </div>
+        </div>
+    </div><!-- /#photo -->
+</div>
+
+{{ form_end(form) }}

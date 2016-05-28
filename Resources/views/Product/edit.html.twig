@@ -1,0 +1,14 @@
+{% extends 'TNQSoftAdminBundle::layout.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>Sản phẩm
+                <small>cập nhật</small>
+            </h1>
+        </div>
+
+        {% include 'TNQSoftAdminBundle:Product:_form.html.twig' with {'form': form} %}
+    </div>
+    <!-- /container -->
+{% endblock %}

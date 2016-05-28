@@ -1,0 +1,33 @@
+{% extends 'TNQSoftAdminBundle::layout.html.twig' %}
+{% form_theme form 'TNQSoftAdminBundle:Form:form_layout.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>Người dùng
+                <small>đổi mật khẩu</small>
+            </h1>
+        </div>
+
+        {{ form_start(form) }}
+        <p class="text-right">
+            {{ form_row(form.save) }}
+            <a href="{{ path('admin_dashboard') }}" class="btn btn-default">
+                <i class="fa fa-reply"></i>
+                Bỏ qua
+            </a>
+        </p>
+
+        <div class="row">
+            <div class="col-sm-2">&nbsp;</div>
+            <div class="col-sm-10">
+                {% include 'TNQSoftAdminBundle:Partials:flash_message.html.twig' %}
+            </div>
+        </div>
+
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+
+    </div>
+    <!-- /container -->
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'TNQSoftAdminBundle::layout.html.twig' %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="page-header">
+      <h1>Danh mục sản phẩm <small>danh sách</small></h1>
+    </div>
+
+    {% include 'TNQSoftAdminBundle:Partials:flash_message.html.twig' %}
+
+    <p class="text-right">
+        <a href="{{ path('admin_product_category_create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Thêm mới</a>
+    </p>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr class="bg-primary">
+                    <th>#</th>
+                    <th>Tiêu đề</th>
+                    <th>Slug</th>
+                    <th>Ảnh</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in list %}
+                <tr {% if record.lvl == 0 %}class="bg-info"{% endif %}>
+                    <td>{{ record.id }}</td>
+                    <td>{{ record.title|showDepth(record.lvl*2, "-") }}</td>
+                    <td>{{ record.slug }}</td>
+                    <td>
+                        {% if record.webPath is not null %}
+                            <img src="{{ asset(record.webPath)|imagine_filter('thumb_60x45') }}" class="thumbnail m-b-0"/>
+                        {% else %}
+                            <img src="{{ asset('admin/img/not-available.png')|imagine_filter('thumb_60x45') }}" class="thumbnail m-b-0"/>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if record.isActive == 1 %}
+                        <a href="{{ path('admin_product_category_active', {'id': record.id, 'status': 'false' }) }}" class="btn btn-success btn-xs"><i class="fa fa-lock"></i> Hoạt động</a>
+                        {% else %}
+                        <a href="{{ path('admin_product_category_active', {'id': record.id, 'status': 'true' }) }}" class="btn btn-default btn-xs"><i class="fa fa-unlock"></i> Đang khóa</a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('admin_product_category_edit', {'id': record.id }) }}" class="btn btn-info btn-xs"><i class="fa fa-edit"></i></a>
+                        <a href="{{ path('admin_product_category_delete', {'id': record.id }) }}" class="btn btn-danger btn-xs btn-link-delete"><i class="fa fa-trash-o"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div><!-- /.table-responsive -->
+
+</div> <!-- /container -->
+{% endblock %}

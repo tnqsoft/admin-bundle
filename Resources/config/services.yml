@@ -1,0 +1,110 @@
+parameters:
+    tnqsoft_admin.bundle.admin: TNQSoftAdminBundle
+
+    tnqsoft_admin.repository.base.class: TNQSoft\AdminBundle\Repository\BaseRepository
+    tnqsoft_admin.repository.user.class: TNQSoft\AdminBundle\Repository\UserRepository
+    tnqsoft_admin.repository.page.class: TNQSoft\AdminBundle\Repository\PageRepository
+    tnqsoft_admin.repository.news.class: TNQSoft\AdminBundle\Repository\NewsRepository
+    tnqsoft_admin.repository.news_category.class: TNQSoft\AdminBundle\Repository\NewsCategoryRepository
+    tnqsoft_admin.repository.photo.class: TNQSoft\AdminBundle\Repository\PhotoRepository
+    tnqsoft_admin.repository.photo_category.class: TNQSoft\AdminBundle\Repository\PhotoCategoryRepository
+    tnqsoft_admin.repository.testimonial.class: TNQSoft\AdminBundle\Repository\TestimonialRepository
+    tnqsoft_admin.repository.partner.class: TNQSoft\AdminBundle\Repository\PartnerRepository
+    tnqsoft_admin.repository.product_category.class: TNQSoft\AdminBundle\Repository\ProductCategoryRepository
+    tnqsoft_admin.repository.product.class: TNQSoft\AdminBundle\Repository\ProductRepository
+    tnqsoft_admin.repository.product_img.class: TNQSoft\AdminBundle\Repository\ProductImgRepository
+    tnqsoft_admin.repository.menu.class: TNQSoft\AdminBundle\Repository\MenuRepository
+    tnqsoft_admin.repository.banner.class: TNQSoft\AdminBundle\Repository\BannerRepository
+
+    tnqsoft_admin.service.base.class: TNQSoft\AdminBundle\Service\BaseService
+    tnqsoft_admin.service.user.class: TNQSoft\AdminBundle\Service\UserService
+
+    tnqsoft_admin.security.provider.webservice_user.class: TNQSoft\AdminBundle\Security\Provider\WebserviceUserProvider
+
+services:
+    tnqsoft_admin.metadata.product_category:
+        class: Doctrine\ORM\Mapping\ClassMetadata
+        arguments: [TNQSoft\AdminBundle\Entity\ProductCategory]
+    tnqsoft_admin.metadata.menu:
+        class: Doctrine\ORM\Mapping\ClassMetadata
+        arguments: [TNQSoft\AdminBundle\Entity\Menu]
+
+    tnqsoft_admin.repository.base:
+        class: %tnqsoft_admin.repository.base.class%
+        arguments: ["@doctrine.orm.default_entity_manager", %tnqsoft_admin.bundle.admin%]
+    tnqsoft_admin.repository.user:
+        class: %tnqsoft_admin.repository.user.class%
+        parent: tnqsoft_admin.repository.base
+    tnqsoft_admin.repository.page:
+        class: %tnqsoft_admin.repository.page.class%
+        parent: tnqsoft_admin.repository.base
+    tnqsoft_admin.repository.news:
+        class: %tnqsoft_admin.repository.news.class%
+        parent: tnqsoft_admin.repository.base
+    tnqsoft_admin.repository.news_category:
+        class: %tnqsoft_admin.repository.news_category.class%
+        parent: tnqsoft_admin.repository.base
+    tnqsoft_admin.repository.photo:
+        class: %tnqsoft_admin.repository.photo.class%
+        parent: tnqsoft_admin.repository.base
+    tnqsoft_admin.repository.photo_category:
+        class: %tnqsoft_admin.repository.photo_category.class%
+        parent: tnqsoft_admin.repository.base
+    tnqsoft_admin.repository.testimonial:
+        class: %tnqsoft_admin.repository.testimonial.class%
+        parent: tnqsoft_admin.repository.base
+    tnqsoft_admin.repository.partner:
+        class: %tnqsoft_admin.repository.partner.class%
+        parent: tnqsoft_admin.repository.base
+    tnqsoft_admin.repository.product_category:
+        class: %tnqsoft_admin.repository.product_category.class%
+        arguments: ["@doctrine.orm.default_entity_manager", "@tnqsoft_admin.metadata.product_category"]
+        calls:
+            - [init, ["@doctrine.orm.default_entity_manager", %tnqsoft_admin.bundle.admin%]]
+    tnqsoft_admin.repository.product:
+        class: %tnqsoft_admin.repository.product.class%
+        parent: tnqsoft_admin.repository.base
+    tnqsoft_admin.repository.product_img:
+        class: %tnqsoft_admin.repository.product_img.class%
+        parent: tnqsoft_admin.repository.base
+    tnqsoft_admin.repository.menu:
+        class: %tnqsoft_admin.repository.menu.class%
+        arguments: ["@doctrine.orm.default_entity_manager", "@tnqsoft_admin.metadata.menu"]
+        calls:
+            - [init, ["@doctrine.orm.default_entity_manager", %tnqsoft_admin.bundle.admin%]]
+    tnqsoft_admin.repository.banner:
+        class: %tnqsoft_admin.repository.banner.class%
+        parent: tnqsoft_admin.repository.base
+
+    tnqsoft_admin.service.base:
+        class: %tnqsoft_admin.service.base.class%
+        calls:
+            - [setContainer, ["@service_container"]]
+    tnqsoft_admin.service.user:
+        class: %tnqsoft_admin.service.user.class%
+        parent: tnqsoft_admin.service.base
+        calls:
+            - [setUserRepository, ["@tnqsoft_admin.repository.user"]]
+            - [setSecurityEncoder, ["@security.password_encoder"]]
+
+    tnqsoft_admin.security.provider.webservice_user:
+        class: %tnqsoft_admin.security.provider.webservice_user.class%
+        calls:
+            - [setUserService, ["@tnqsoft_admin.service.user"]]
+
+    tnqsoft_admin.image_type_extension:
+        class: TNQSoft\AdminBundle\Form\Extension\ImageTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FileType }
+
+    tnqsoft_admin.twig_extension:
+        class: TNQSoft\AdminBundle\Twig\Extension\AppExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+
+    symfony.form.type_guesser.tree:
+       class: Yavin\Symfony\Form\Type\TreeTypeGuesser
+       arguments: [ "@doctrine" ]
+       tags:
+           - { name: form.type_guesser }

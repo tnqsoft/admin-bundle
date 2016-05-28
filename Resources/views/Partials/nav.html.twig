@@ -1,0 +1,114 @@
+{% if is_granted('IS_AUTHENTICATED_FULLY') or is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+{% set current_router = app.request.attributes.get('_route') %}
+
+<!-- Fixed navbar -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ path('admin_dashboard') }}">Quản trị hệ thống</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="{% if current_router == 'admin_dashboard' %}active{% endif %}">
+                    <a href="{{ path('admin_dashboard') }}">Trang chủ</a>
+                </li>
+                <li class="dropdown {% if current_router in ['admin_banner_list', 'admin_menu_list'] %}active{% endif %}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hệ thống
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="{{ path('admin_banner_list') }}">Banner</a>
+                        </li>
+                        <li role="separator" class="divider"></li>
+						<li>
+                            <a href="{{ path('admin_menu_list') }}">Quản lý Menu</a>
+                        </li>
+                        {#<li>#}
+                            {#<a href="{{ path('admin_page_list') }}">Cấu hình</a>#}
+                        {#</li>#}
+                        {#<li>#}
+                            {#<a href="{{ path('admin_page_list') }}">Sao lưu dữ liệu</a>#}
+                        {#</li>#}
+                        {#<li>#}
+                            {#<a href="{{ path('admin_page_list') }}">Làm mới cache</a>#}
+                        {#</li>#}
+                    </ul>
+                </li>
+                <li class="dropdown {% if current_router in ['admin_page_list', 'admin_news_category_list', 'admin_news_list'] %}active{% endif %}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Nội dung
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="{{ path('admin_page_list') }}">Trang tĩnh</a>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li>
+                            <a href="{{ path('admin_news_category_list') }}">Danh mục tin</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_news_list') }}">Tin tức</a>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li>
+                            <a href="{{ path('admin_photo_category_list') }}">Thư viện ảnh</a>
+                        </li>
+                        {#<li>
+                            <a href="{{ path('admin_photo_list') }}">Thư viện ảnh</a>
+                        </li>#}
+                    </ul>
+                </li>
+                <li class="dropdown {% if current_router in ['admin_partner_list', 'admin_product_category_list', 'admin_product_list', 'admin_testimonial_list'] %}active{% endif %}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cửa hàng
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="{{ path('admin_partner_list') }}">Đối tác</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_product_category_list') }}">Danh mục hàng</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_product_list') }}">Sản phẩm</a>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li>
+                            <a href="{{ path('admin_testimonial_list') }}">Ý kiến khách hàng</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown {% if current_router in ['admin_change_password'] %}active{% endif %}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-user"></i>
+                        Xin chào {{ app.user.username }}
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        {#<li>#}
+                            {#<a href="{{ path('logout') }}">Thông tin người dùng</a>#}
+                        {#</li>#}
+                        <li>
+                            <a href="{{ path('admin_change_password') }}">Đổi mật khẩu</a>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li>
+                            <a href="{{ path('logout') }}"><i class="fa fa-sign-out"></i> Thoát</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+</nav>
+{% endif %}

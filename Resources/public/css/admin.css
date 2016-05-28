@@ -1,0 +1,143 @@
+body {
+  padding-top: 70px;
+  padding-bottom: 30px;
+}
+
+footer {
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-top: 30px;
+    text-align: center;
+}
+
+.panel-login {
+    width: 400px;
+    margin: 30px auto;
+}
+
+.pagination {
+    margin-top: 0px;
+}
+
+.help-block-custom {
+    color: #969696;
+    font-size: 12px;
+    padding-top: 5px;
+}
+
+.checkbox label, .radio label {
+    padding-left: 0px;
+}
+
+.p-t-10 {
+    padding-top: 10px;
+}
+
+.m-b-0 {
+    margin-bottom: 0px;
+}
+
+.table>tbody>tr>td,
+.table>tbody>tr>th,
+.table>tfoot>tr>td,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>thead>tr>th {
+    vertical-align: middle;
+}
+
+.product-tab .tab-pane {
+    padding: 20px;
+}
+
+#product_listPhoto_content,
+#category_listPhoto_content {
+    margin-top: 30px;
+}
+.embed-form-item {
+    margin-bottom: 20px;
+}
+.embed-form-item-content {
+    padding: 10px;
+    border: 1px dashed #ccc;
+}
+
+.dashboard-quick-menu {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+.dashboard-quick-menu li {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    padding: 5px;
+}
+.dashboard-quick-menu li a {
+    display: block;
+    border: 1px solid #ccc;
+    text-align: center;
+    color: #000;
+    font-size: 12px;
+    padding: 10px;
+}
+.dashboard-quick-menu li a i {
+    display: block;
+    text-align: center;
+    font-size: 4rem;
+}
+.dashboard-quick-menu li a:hover,
+.dashboard-quick-menu li a:active,
+.dashboard-quick-menu li a:focus{
+    color: #337ab7;
+    text-decoration: none;
+    border-color: #337ab7;
+}
+
+.sortable-box {
+    background-color: #e0e0e0;
+    border: 1px solid #dcdcdc;
+    padding: 20px;
+}
+.sortable {
+    list-style: none;
+    list-style-type: none;
+    padding-left: 0px;
+}
+.sortable .placeholder {
+    outline: 1px dashed #337AB7;
+}
+.sortable li {
+    list-style: none;
+    list-style-type: none;
+    display: block;
+}
+.sortable li .sortable-item {
+    border: 1px solid #337AB7;
+    margin-bottom: 3px;
+    background-color: #fff;
+    margin-right: 0px;
+    margin-left: 0px;
+}
+.sortable li .sortable-item .handle {
+    background-color: #337AB7;
+    color: #fff;
+    float: left;
+    padding: 5px 10px;
+    cursor: move;
+}
+.sortable li .sortable-item .title {
+    float: left;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    font-size: 12px;
+}
+.sortable li.deactive .sortable-item {
+    background-color: #E0E0E0;
+    border: 1px solid #999;
+}
+.sortable li.deactive .sortable-item .handle {
+    background-color: #999;
+}

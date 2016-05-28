@@ -1,0 +1,39 @@
+{% form_theme form 'TNQSoftAdminBundle:Form:form_layout.html.twig' %}
+
+{{ form_start(form) }}
+
+<p class="text-right">
+    {{ form_row(form.saveAndAdd) }}
+    {{ form_row(form.save) }}
+    <a href="{{ path('admin_partner_list') }}" class="btn btn-default">
+        <i class="fa fa-reply"></i>
+        Quay lại
+    </a>
+</p>
+
+<div class="row">
+    <div class="col-sm-2">&nbsp;</div>
+    <div class="col-sm-10">
+        {% include 'TNQSoftAdminBundle:Partials:flash_message.html.twig' %}
+    </div>
+</div>
+
+{{ form_widget(form) }}
+
+{% if entity.id is not null %}
+<div class="form-group">
+	<label class="col-sm-2 control-label">{{ 'Created At'|trans }}:</label>
+	<div class="col-sm-10">{{ entity.createdAt|date('Y-m-d H:i:s')}}</div>
+</div>
+<div class="hr-line-dashed"></div>
+
+{% if entity.updatedAt is not null %}
+<div class="form-group">
+	<label class="col-sm-2 control-label">{{ 'Updated At'|trans }}:</label>
+	<div class="col-sm-10">{{ entity.updatedAt|date('Y-m-d H:i:s')}}</div>
+</div>
+<div class="hr-line-dashed"></div>
+{% endif %}
+{% endif %}
+
+{{ form_end(form) }}

@@ -1,0 +1,94 @@
+{% extends 'TNQSoftAdminBundle::layout.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-8">
+                <p><strong>Liên kết nhanh</strong></p>
+                <ul class="dashboard-quick-menu clearfix">
+                    {#<li class="col-xs-4 col-sm-2">#}
+                        {#<a href="{{ path('admin_banner_list') }}">#}
+                            {#<i class="fa fa-sliders"></i>#}
+                            {#<span>Cấu hình</span>#}
+                        {#</a>#}
+                    {#</li>#}
+                    <li class="col-xs-4 col-sm-2">
+                        <a href="{{ path('admin_banner_list') }}">
+                            <i class="fa fa-image"></i>
+                            <span>Banner</span>
+                        </a>
+                    </li>
+                    <li class="col-xs-4 col-sm-2">
+                        <a href="{{ path('admin_menu_list') }}">
+                            <i class="fa fa-navicon"></i>
+                            <span>Menu</span>
+                        </a>
+                    </li>
+                    <li class="col-xs-4 col-sm-2">
+                        <a href="{{ path('admin_page_list') }}">
+                            <i class="fa fa-globe"></i>
+                            <span>Trang tĩnh</span>
+                        </a>
+                    </li>
+                    <li class="col-xs-4 col-sm-2">
+                        <a href="{{ path('admin_news_category_list') }}">
+                            <i class="fa fa-folder"></i>
+                            <span>Danh mục Tin</span>
+                        </a>
+                    </li>
+                    <li class="col-xs-4 col-sm-2">
+                        <a href="{{ path('admin_news_list') }}">
+                            <i class="fa fa-newspaper-o"></i>
+                            <span>Tin tức</span>
+                        </a>
+                    </li>
+
+                    <li class="col-xs-4 col-sm-2">
+                        <a href="{{ path('admin_partner_list') }}">
+                            <i class="fa fa-industry"></i>
+                            <span>Đối tác</span>
+                        </a>
+                    </li>
+                    <li class="col-xs-4 col-sm-2">
+                        <a href="{{ path('admin_product_category_list') }}">
+                            <i class="fa fa-folder"></i>
+                            <span>Danh mục SP</span>
+                        </a>
+                    </li>
+                    <li class="col-xs-4 col-sm-2">
+                        <a href="{{ path('admin_product_list') }}">
+                            <i class="fa fa-shopping-basket"></i>
+                            <span>Sản phẩm</span>
+                        </a>
+                    </li>
+                    <li class="col-xs-4 col-sm-2">
+                        <a href="{{ path('admin_testimonial_list') }}">
+                            <i class="fa fa-comments"></i>
+                            <span>Phản hồi</span>
+                        </a>
+                    </li>
+                    <li class="col-xs-4 col-sm-2">
+                        <a href="{{ path('admin_photo_category_list') }}">
+                            <i class="fa fa-image"></i>
+                            <span>Photos</span>
+                        </a>
+                    </li>
+                    <li class="col-xs-4 col-sm-2">
+                        <a href="{{ path('admin_change_password') }}">
+                            <i class="fa fa-lock"></i>
+                            <span>Đổi mật khẩu</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-xs-12 col-sm-4">
+                {% include 'TNQSoftAdminBundle:Partials:admin_info.html.twig' %}
+            </div>
+
+        </div>
+
+    </div>
+    <!-- /container -->
+{% endblock %}

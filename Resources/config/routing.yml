@@ -1,0 +1,4 @@
+tnqsoft_admin:
+    resource: "@TNQSoftAdminBundle/Controller/"
+    type:     annotation
+    prefix:   /admin
