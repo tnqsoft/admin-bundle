@@ -362,8 +362,10 @@ class Partner
 
         // check if we have an old image
         if (isset($this->temp)) {
-            // delete the old image
-            unlink($this->getUploadRootDir().$this->temp);
+            if (file_exists($this->getUploadRootDir().$this->temp) && is_file($this->getUploadRootDir().$this->temp)) {
+                // delete the old image
+                unlink($this->getUploadRootDir().$this->temp);
+            }
             // clear the temp image path
             $this->temp = null;
         }
@@ -376,7 +378,7 @@ class Partner
     public function removeUpload()
     {
         $file = $this->getAbsolutePath();
-        if ($file) {
+        if (file_exists($file) && is_file($file)) {
             unlink($file);
         }
     }
