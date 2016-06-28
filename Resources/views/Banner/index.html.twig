@@ -34,7 +34,7 @@
                         {% if record.webPath is not null %}
                             <img src="{{ asset(record.webPath)|imagine_filter('thumb_60x45') }}" class="thumbnail m-b-0"/>
                         {% else %}
-                            <img src="{{ asset('admin/img/not-available.png')|imagine_filter('thumb_60x45') }}" class="thumbnail m-b-0"/>
+                            <img src="{{ asset('bundles/tnqsoftadmin/img/not-available.png')|imagine_filter('thumb_60x45') }}" class="thumbnail m-b-0"/>
                         {% endif %}
                     </td>
                     <td>{{ record.position }}</td>
