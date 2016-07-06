@@ -27,8 +27,9 @@
     },
     "repositories": [
         {
-            "type"  : "path",
-            "url"   : "../common-bundle"
+            "type": "path",
+            "url": "../common-bundle",
+            "packagist": false
         }
     ],
     "minimum-stability": "dev",
