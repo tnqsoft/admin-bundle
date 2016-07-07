@@ -4,7 +4,7 @@ namespace TNQSoft\AdminBundle\Repository;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use TNQSoft\CommonBundle\Service\PaginatorService;
-use TNQSoft\CommonBundle\Repository\BaseRepository;
+use TNQSoft\CommonBundle\Repository\BaseNestedTreeRepository;
 use TNQSoft\AdminBundle\Entity\ProductCategory;
 
 /**

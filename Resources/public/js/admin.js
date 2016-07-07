@@ -154,3 +154,5 @@ $('#product_price').change(function(){
 });
 
 $('.dashboard-quick-menu li a').matchHeight();
+
+$('[data-toggle="tooltip"]').tooltip();
