@@ -2,7 +2,8 @@
 
 namespace TNQSoft\AdminBundle\Repository;
 
-use TNQSoft\AdminBundle\Service\PaginatorService;
+use TNQSoft\CommonBundle\Service\PaginatorService;
+use TNQSoft\CommonBundle\Repository\BaseRepository;
 
 /**
  * Class ProductImgRepository

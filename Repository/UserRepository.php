@@ -2,6 +2,8 @@
 
 namespace TNQSoft\AdminBundle\Repository;
 
+use TNQSoft\CommonBundle\Service\PaginatorService;
+use TNQSoft\CommonBundle\Repository\BaseRepository;
 use TNQSoft\AdminBundle\Entity\User;
 
 /**
