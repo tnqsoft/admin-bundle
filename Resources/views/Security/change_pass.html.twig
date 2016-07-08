@@ -1,4 +1,4 @@
-{% extends 'TNQSoftAdminBundle::layout.html.twig' %}
+{% extends 'TNQSoftAdminBundle:Layout:layout.html.twig' %}
 {% form_theme form 'TNQSoftAdminBundle:Form:form_layout.html.twig' %}
 
 {% block body %}
@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-sm-2">&nbsp;</div>
             <div class="col-sm-10">
-                {% include 'TNQSoftAdminBundle:Partials:flash_message.html.twig' %}
+                {% include 'TNQSoftAdminBundle:Common:flash_message.html.twig' %}
             </div>
         </div>
 

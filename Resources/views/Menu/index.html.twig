@@ -1,4 +1,4 @@
-{% extends 'TNQSoftAdminBundle::layout.html.twig' %}
+{% extends 'TNQSoftAdminBundle:Layout:layout.html.twig' %}
 
 {% block body %}
 <div class="container-fluid">
@@ -6,7 +6,7 @@
       <h1>Menu <small>danh sách</small></h1>
     </div>
 
-    {% include 'TNQSoftAdminBundle:Partials:flash_message.html.twig' %}
+    {% include 'TNQSoftAdminBundle:Common:flash_message.html.twig' %}
 
     <p class="text-right">
         <a href="{{ path('admin_menu_sort') }}" class="btn btn-info"><i class="fa fa-tasks"></i> Sắp xếp Menu</a>
@@ -16,32 +16,42 @@
     <div class="table-responsive">
         <table class="table table-bordered table-hover">
             <thead>
-                <tr class="bg-primary">
-                    <th>#</th>
+                <tr class="bg-tr-head">
+                    <th width="1%" nowrap="" class="text-center"><i class="fa fa-lock"></i></th>
+                    <th width="1%" nowrap="">#</th>
                     <th>Tiêu đề</th>
                     <th>Routing</th>
                     <th>Tham số</th>
-                    <th>Trạng thái</th>
-                    <th>Hành động</th>
+                    <th width="1%" nowrap="">Hành động</th>
                 </tr>
             </thead>
             <tbody>
                 {% for record in list %}
                 <tr {% if record.lvl == 0 %}class="bg-info"{% endif %}>
+                    <td nowrap="">
+                        {% include 'TNQSoftAdminBundle:Common:Button/active.html.twig'
+                        with {
+                        'actionName': 'admin_menu_active',
+                        'record': record
+                        }
+                        %}
+                    </td>
                     <td>{{ record.id }}</td>
-                    <td>{{ record.title|showDepth(record.lvl*2, "-") }}</td>
+                    <td>
+                        <a href="{{ path('admin_menu_edit', {'id': record.id }) }}">
+                            {{ record.title|showDepth(record.lvl*2, "-") }}
+                        </a>
+                    </td>
                     <td>{{ record.routerName }}</td>
                     <td>{{ record.parameters }}</td>
-                    <td>
-                        {% if record.isActive == 1 %}
-                        <a href="{{ path('admin_menu_active', {'id': record.id, 'status': 'false' }) }}" class="btn btn-success btn-xs"><i class="fa fa-lock"></i> Hoạt động</a>
-                        {% else %}
-                        <a href="{{ path('admin_menu_active', {'id': record.id, 'status': 'true' }) }}" class="btn btn-default btn-xs"><i class="fa fa-unlock"></i> Đang khóa</a>
-                        {% endif %}
-                    </td>
-                    <td>
-                        <a href="{{ path('admin_menu_edit', {'id': record.id }) }}" class="btn btn-info btn-xs"><i class="fa fa-edit"></i></a>
-                        <a href="{{ path('admin_menu_delete', {'id': record.id }) }}" class="btn btn-danger btn-xs btn-link-delete"><i class="fa fa-trash-o"></i></a>
+                    <td nowrap="">
+                        {% include 'TNQSoftAdminBundle:Common:Button/edit-delete.html.twig'
+                        with {
+                        'actionEdit': 'admin_menu_edit',
+                        'actionDelete': 'admin_menu_delete',
+                        'record': record
+                        }
+                        %}
                     </td>
                 </tr>
                 {% endfor %}

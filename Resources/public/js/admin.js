@@ -155,4 +155,4 @@ $('#product_price').change(function(){
 
 $('.dashboard-quick-menu li a').matchHeight();
 
-$('[data-toggle="tooltip"]').tooltip();
+$("body").tooltip({ selector: '[data-toggle=tooltip]' });

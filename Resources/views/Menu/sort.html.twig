@@ -1,7 +1,14 @@
-{% extends 'TNQSoftAdminBundle::layout.html.twig' %}
+{% extends 'TNQSoftAdminBundle:Layout:layout.html.twig' %}
 
 {######################################################################################################################}
 {% block javascripts %}
+{% javascripts
+    '@TNQSoftAdminBundle/Resources/public/vendor/jquery-ui.min.js'
+    '@TNQSoftAdminBundle/Resources/public/vendor/jquery.mjs.nestedSortable.js'
+    output='js/compiled/admin-sortable-base.js'
+%}
+    <script src="{{ asset_url }}"></script>
+{% endjavascripts %}
 <script>
     $('ol.sortable').nestedSortable({
         handle: 'div.handle',
@@ -40,7 +47,7 @@
                 </a>
             </p>
 
-            {% include 'TNQSoftAdminBundle:Partials:flash_message.html.twig' %}
+            {% include 'TNQSoftAdminBundle:Common:flash_message.html.twig' %}
 
             <div class="sortable-box">
             {% if menus %}

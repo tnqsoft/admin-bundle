@@ -7,9 +7,9 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <link rel="icon" href="/favicon.ico">
-        <title>Symfony 3 CMS ver {{ app_ver }}</title>
+        <title>Symfony 3 CMS - Version {{ app_admin_ver }}</title>
         {% include 'TNQSoftCommonBundle:Layout:css.html.twig' %}
-        {% include 'TNQSoftAdminBundle::css.html.twig' %}
+        {% include 'TNQSoftAdminBundle:Layout:css.html.twig' %}
         {% block stylesheets %}{% endblock %}
     </head>
 
@@ -20,13 +20,13 @@
 
         <footer>
             <p>&copy; {{ "now"|date("Y") }} <a href="http://i-designer.net" target="_blank">I-Designer</a>.</p>
-            <p>Symfony 3 CMS - Version {{ app_ver }}</p>
+            <p>Symfony 3 CMS - Version {{ app_admin_ver }}</p>
         </footer>
 
         {% include 'TNQSoftAdminBundle:Common:modal_delete.html.twig' %}
 
         {% include 'TNQSoftCommonBundle:Layout:js.html.twig' %}
-        {% include 'TNQSoftAdminBundle::js.html.twig' %}
+        {% include 'TNQSoftAdminBundle:Layout:js.html.twig' %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>

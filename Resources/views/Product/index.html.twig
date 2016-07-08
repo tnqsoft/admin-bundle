@@ -1,4 +1,4 @@
-{% extends 'TNQSoftAdminBundle::layout.html.twig' %}
+{% extends 'TNQSoftAdminBundle:Layout:layout.html.twig' %}
 
 {% block body %}
 <div class="container-fluid">
@@ -28,7 +28,7 @@
                 {% for record in paginator %}
                 <tr>
                     <td nowrap="">
-                        {% include 'TNQSoftAdminBundle:Common:button-active.html.twig'
+                        {% include 'TNQSoftAdminBundle:Common:Button/active.html.twig'
                         with {
                         'actionName': 'admin_product_active',
                         'record': record
@@ -50,7 +50,7 @@
                     </td>
                     <td>{{ record.category.title }}</td>
                     <td nowrap="">
-                        {% include 'TNQSoftAdminBundle:Common:button-edit-delete.html.twig'
+                        {% include 'TNQSoftAdminBundle:Common:Button/edit-delete.html.twig'
                         with {
                         'actionEdit': 'admin_product_edit',
                         'actionDelete': 'admin_product_delete',
