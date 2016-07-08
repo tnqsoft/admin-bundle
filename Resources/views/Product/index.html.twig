@@ -9,14 +9,19 @@
 {##############################################################################}
 {% block javascripts %}
 <script>
-    $('.table-product-price').click(function(e){
+    $(document).on('click', '.table-product-price-text', function(e){
         e.preventDefault();
-        if($(this).hasClass('edit')) {
-            return false;
-        }
-        var input = '<input type="text" value="'+$(this).html()+'" class="form-control">';
-        $(this).html(input);
-        $(this).addClass('edit');
+        var _parent = $(this).closest(".table-product-price");
+        var _input = '<input type="text" value="'+$(this).html()+'" class="form-control" data-old-value="'+$(this).html()+'" name="prices['+_parent.data('id')+']">';
+        _input += '<button type="button" class="btn btn-default btn-cancel"><i class="fa fa-times"></i></button>';
+        _parent.html(_input);
+    });
+
+    $(document).on('click', '.table-product-price .btn-cancel', function(e){
+        var _parent = $(this).closest(".table-product-price");
+        var _value = $('input', _parent).data('oldValue');
+        var _a = '<a href="#" class="table-product-price-text">'+_value+'</a>';
+        _parent.html(_a);
     });
 </script>
 {% endblock %}
@@ -75,7 +80,7 @@
                         </a>
                     </td>
                     <td>{{ record.category.title }}</td>
-                    <td><a href="#" class="table-product-price">{{ record.price }}</a></td>
+                    <td nowrap="" class="table-product-price" data-id="{{ record.id }}"><a href="#" class="table-product-price-text">{{ record.price }}</a></td>
                     <td class="text-center">
                         {% include 'TNQSoftAdminBundle:Common:Button/isnew.html.twig'
                         with {

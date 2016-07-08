@@ -160,3 +160,19 @@ footer {
 .sortable li.deactive .sortable-item .handle {
     background-color: #999;
 }
+
+.table-product-price input {
+    width: 100px;
+    font-size: 12px;
+    color: #ff0000;
+    text-decoration: none;
+    display: inline-block;
+}
+.table-product-price input,
+.table-product-price button{
+    margin-right: 5px;
+}
+.table-product-price:hover input {
+    color: #ff0000;
+    text-decoration: none;
+}
