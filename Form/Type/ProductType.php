@@ -63,6 +63,14 @@ class ProductType extends AbstractType
                 'label' => 'Trạng thái',
                 'attr' => array('class' => 'checkbox-switch-active')
             ))
+            ->add('isNew', null, array(
+                'label' => 'Hàng mới',
+                'attr' => array('class' => 'checkbox-switch-active')
+            ))
+            ->add('isSpecial', null, array(
+                'label' => 'Hàng đặc biệt',
+                'attr' => array('class' => 'checkbox-switch-active')
+            ))
             ->add('listPhoto', CollectionType::class, array(
                 'entry_type'   => ProductImgType::class,
                 'allow_add'    => true,

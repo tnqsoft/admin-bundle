@@ -64,6 +64,16 @@ class Product
     private $isActive;
 
     /**
+     * @ORM\Column(name="is_new", type="boolean", nullable=false)
+     */
+    private $isNew;
+
+    /**
+     * @ORM\Column(name="is_special", type="boolean", nullable=false)
+     */
+    private $isSpecial;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
@@ -106,6 +116,8 @@ class Product
     public function __construct()
     {
         $this->isActive = true;
+        $this->isNew = false;
+        $this->isSpecial = false;
         $this->outOfStock = true;
         $this->listPhoto = new ArrayCollection();
         $this->price = 0;
@@ -285,6 +297,54 @@ class Product
     public function setIsActive($isActive)
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of Is New
+     *
+     * @return mixed
+     */
+    public function getIsNew()
+    {
+        return $this->isNew;
+    }
+
+    /**
+     * Set the value of Is New
+     *
+     * @param mixed isNew
+     *
+     * @return self
+     */
+    public function setIsNew($isNew)
+    {
+        $this->isNew = $isNew;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of Is Special
+     *
+     * @return mixed
+     */
+    public function getIsSpecial()
+    {
+        return $this->isSpecial;
+    }
+
+    /**
+     * Set the value of Is Special
+     *
+     * @param mixed isSpecial
+     *
+     * @return self
+     */
+    public function setIsSpecial($isSpecial)
+    {
+        $this->isSpecial = $isSpecial;
 
         return $this;
     }

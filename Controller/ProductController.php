@@ -155,6 +155,40 @@ class ProductController extends Controller
         $request->getSession()->getFlashBag()->add('warning', 'Cập nhật bản ghi có id là '.$id.' thành công');
         return $this->redirect($this->generateUrl('admin_product_list'));
     }
+
+    /**
+     * @Route("/set/new/{id}/{status}", requirements={"id" = "\d+" ,"status" = "true|false"}, name="admin_product_set_new")
+     * @Method({"GET", "POST"})
+     */
+    public function setNewAction(Request $request, $id, $status)
+    {
+        $productRepository = $this->get('tnqsoft_admin.repository.product');
+        $product = $productRepository->findOneById($id);
+        if(null === $product) {
+            throw new HttpException(404, 'Không tìm thấy bản ghi có id là '.$id);
+        }
+        $product->setIsNew(($status==='true'?true:false));
+        $productRepository->persistAndFlush($product);
+        $request->getSession()->getFlashBag()->add('warning', 'Cập nhật bản ghi có id là '.$id.' thành công');
+        return $this->redirect($this->generateUrl('admin_product_list'));
+    }
+
+    /**
+     * @Route("/set/special/{id}/{status}", requirements={"id" = "\d+" ,"status" = "true|false"}, name="admin_product_set_special")
+     * @Method({"GET", "POST"})
+     */
+    public function setSpecialAction(Request $request, $id, $status)
+    {
+        $productRepository = $this->get('tnqsoft_admin.repository.product');
+        $product = $productRepository->findOneById($id);
+        if(null === $product) {
+            throw new HttpException(404, 'Không tìm thấy bản ghi có id là '.$id);
+        }
+        $product->setIsSpecial(($status==='true'?true:false));
+        $productRepository->persistAndFlush($product);
+        $request->getSession()->getFlashBag()->add('warning', 'Cập nhật bản ghi có id là '.$id.' thành công');
+        return $this->redirect($this->generateUrl('admin_product_list'));
+    }
     ////////////////////////////////////////////////////////////////////////////
 
     /**

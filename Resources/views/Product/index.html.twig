@@ -1,5 +1,26 @@
 {% extends 'TNQSoftAdminBundle:Layout:layout.html.twig' %}
-
+{##############################################################################}
+{% block breadcrumb %}
+<ol class="breadcrumb">
+    <li><a href="{{ path('admin_dashboard') }}"><i class="fa fa-home"></i> Quản trị</a></li>
+    <li class="active">Sản phẩm</li>
+</ol>
+{% endblock %}
+{##############################################################################}
+{% block javascripts %}
+<script>
+    $('.table-product-price').click(function(e){
+        e.preventDefault();
+        if($(this).hasClass('edit')) {
+            return false;
+        }
+        var input = '<input type="text" value="'+$(this).html()+'" class="form-control">';
+        $(this).html(input);
+        $(this).addClass('edit');
+    });
+</script>
+{% endblock %}
+{##############################################################################}
 {% block body %}
 <div class="container-fluid">
     <div class="page-header">
@@ -10,6 +31,8 @@
 
     <p class="text-right">
         <a href="{{ path('admin_product_create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Thêm mới</a>
+        <a href="{{ path('admin_product_create') }}" class="btn btn-default"><i class="fa fa-cloud-download"></i> Xuất ra Excel</a>
+        <a href="{{ path('admin_product_create') }}" class="btn btn-default"><i class="fa fa-cloud-upload"></i> Cập nhật từ Excel</a>
     </p>
 
     <div class="table-responsive">
@@ -21,6 +44,9 @@
                     <th width="1%" nowrap="">Ảnh SP</th>
                     <th>Sản phẩm</th>
                     <th>Danh mục</th>
+                    <th width="1%" nowrap="">Giá</th>
+                    <th width="1%" nowrap="">Hàng mới</th>
+                    <th width="1%" nowrap="">Đặc biệt</th>
                     <th width="1%" nowrap="">Hành động</th>
                 </tr>
             </thead>
@@ -49,6 +75,23 @@
                         </a>
                     </td>
                     <td>{{ record.category.title }}</td>
+                    <td><a href="#" class="table-product-price">{{ record.price }}</a></td>
+                    <td class="text-center">
+                        {% include 'TNQSoftAdminBundle:Common:Button/isnew.html.twig'
+                        with {
+                        'actionName': 'admin_product_set_new',
+                        'record': record
+                        }
+                        %}
+                    </td>
+                    <td class="text-center">
+                        {% include 'TNQSoftAdminBundle:Common:Button/isspecial.html.twig'
+                        with {
+                        'actionName': 'admin_product_set_special',
+                        'record': record
+                        }
+                        %}
+                    </td>
                     <td nowrap="">
                         {% include 'TNQSoftAdminBundle:Common:Button/edit-delete.html.twig'
                         with {

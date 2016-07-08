@@ -16,6 +16,12 @@
     <body>
         {% include 'TNQSoftAdminBundle:Partials:nav.html.twig' %}
 
+        {% if block('breadcrumb') %}
+            <div class="container-fluid">
+                {% block breadcrumb %}{% endblock %}
+            </div>
+        {% endif %}
+
         {% block body %}{% endblock %}
 
         <footer>

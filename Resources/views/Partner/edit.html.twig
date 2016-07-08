@@ -1,5 +1,13 @@
 {% extends 'TNQSoftAdminBundle:Layout:layout.html.twig' %}
-
+{##############################################################################}
+{% block breadcrumb %}
+<ol class="breadcrumb">
+    <li><a href="{{ path('admin_dashboard') }}"><i class="fa fa-home"></i> Quản trị</a></li>
+    <li><a href="{{ path('admin_partner_list') }}">Đối tác</a></li>
+    <li class="active">Cập nhật</li>
+</ol>
+{% endblock %}
+{##############################################################################}
 {% block body %}
     <div class="container-fluid">
         <div class="page-header">
