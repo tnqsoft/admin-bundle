@@ -22,7 +22,8 @@
         "liip/imagine-bundle": "^1.5",
         "yavin/symfony-form-tree": "~1.0",
         "stof/doctrine-extensions-bundle": "^1.2",
-        "symfony/assetic-bundle": "^2.8"
+        "symfony/assetic-bundle": "^2.8",
+        "liuggio/excelbundle": "2.1.*"
     },
     "minimum-stability": "dev",
     "extra": {

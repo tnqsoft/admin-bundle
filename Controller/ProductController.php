@@ -13,6 +13,9 @@ use TNQSoft\AdminBundle\Entity\ProductCategory;
 use TNQSoft\AdminBundle\Form\Type\ProductType;
 use TNQSoft\AdminBundle\Entity\Product;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+
+use \PHPExcel_Cell_DataValidation;
 
 /**
  * @Route("/product")
@@ -50,6 +53,124 @@ class ProductController extends Controller
         return $this->render('TNQSoftAdminBundle:Product:index.html.twig',
             array('paginator' => $paginator)
         );
+    }
+
+    /**
+     * @Route("/export/all.xls", name="admin_export_all_product")
+     */
+    public function exportExcelAction(Request $request)
+    {
+        $productRepository = $this->get('tnqsoft_admin.repository.product');
+        $list = $productRepository->getAllProduct();
+
+        $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
+        $phpExcelObject->getProperties()->setCreator("Symfony 3 CMS")
+            ->setLastModifiedBy("Generate Automation")
+            ->setTitle("All Products")
+            ->setSubject("List of all products")
+            ->setDescription("Document export from Symfony 3 CMS. Export at ".date('Y-m-d H:i:s'))
+            ->setKeywords("Excel, Product")
+            ->setCategory("product");
+        $phpExcelObject->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'ID')
+            ->setCellValue('B1', 'Mã SP')
+            ->setCellValue('C1', 'Tên SP')
+            ->setCellValue('D1', 'Trạng thái kho')
+            ->setCellValue('E1', 'Hàng mới')
+            ->setCellValue('F1', 'Hàng đặc biệt')
+            ->setCellValue('G1', 'Hoạt động')
+            ->setCellValue('H1', 'Giá SP');
+        $phpExcelObject->getActiveSheet()->setTitle('Products');
+
+        $phpExcelObject->getActiveSheet()->getColumnDimension('A')->setWidth(5);
+        $phpExcelObject->getActiveSheet()->getColumnDimension('B')->setWidth(10);
+        $phpExcelObject->getActiveSheet()->getColumnDimension('C')->setWidth(25);
+        $phpExcelObject->getActiveSheet()->getColumnDimension('D')->setWidth(10);
+        $phpExcelObject->getActiveSheet()->getColumnDimension('E')->setWidth(10);
+        $phpExcelObject->getActiveSheet()->getColumnDimension('F')->setWidth(10);
+        $phpExcelObject->getActiveSheet()->getColumnDimension('G')->setWidth(10);
+        $phpExcelObject->getActiveSheet()->getColumnDimension('H')->setWidth(15);
+
+        $row = 1;
+        foreach($list as $product) {
+            $row++;
+            $phpExcelObject->setActiveSheetIndex(0)
+                ->setCellValue('A'.$row, $product->getId())
+                ->setCellValue('B'.$row, $product->getUpc())
+                ->setCellValue('C'.$row, $product->getTitle())
+                ->setCellValue('D'.$row, $product->getOutOfStock())
+                ->setCellValue('E'.$row, $product->getIsNew())
+                ->setCellValue('F'.$row, $product->getIsSpecial())
+                ->setCellValue('G'.$row, $product->getIsActive())
+                ->setCellValue('H'.$row, $product->getPrice());
+            //Init Cell Data Validation
+            $objValidation = $phpExcelObject->getActiveSheet()->getCell('D'.$row)->getDataValidation();
+            $objValidation->setType( PHPExcel_Cell_DataValidation::TYPE_LIST );
+            $objValidation->setErrorStyle( PHPExcel_Cell_DataValidation::STYLE_INFORMATION );
+            $objValidation->setAllowBlank(false);
+            $objValidation->setShowInputMessage(true);
+            $objValidation->setShowErrorMessage(true);
+            $objValidation->setShowDropDown(true);
+            $objValidation->setErrorTitle('Input error');
+            $objValidation->setError('Value is not in list.');
+            $objValidation->setPromptTitle('Pick from list');
+            $objValidation->setPrompt('Please pick a value from the drop-down list.');
+            $objValidation->setFormula1('"TRUE, FALSE"');
+            //Init Cell Data Validation
+            $objValidation = $phpExcelObject->getActiveSheet()->getCell('E'.$row)->getDataValidation();
+            $objValidation->setType( PHPExcel_Cell_DataValidation::TYPE_LIST );
+            $objValidation->setErrorStyle( PHPExcel_Cell_DataValidation::STYLE_INFORMATION );
+            $objValidation->setAllowBlank(false);
+            $objValidation->setShowInputMessage(true);
+            $objValidation->setShowErrorMessage(true);
+            $objValidation->setShowDropDown(true);
+            $objValidation->setErrorTitle('Input error');
+            $objValidation->setError('Value is not in list.');
+            $objValidation->setPromptTitle('Pick from list');
+            $objValidation->setPrompt('Please pick a value from the drop-down list.');
+            $objValidation->setFormula1('"TRUE, FALSE"');
+            //Init Cell Data Validation
+            $objValidation = $phpExcelObject->getActiveSheet()->getCell('F'.$row)->getDataValidation();
+            $objValidation->setType( PHPExcel_Cell_DataValidation::TYPE_LIST );
+            $objValidation->setErrorStyle( PHPExcel_Cell_DataValidation::STYLE_INFORMATION );
+            $objValidation->setAllowBlank(false);
+            $objValidation->setShowInputMessage(true);
+            $objValidation->setShowErrorMessage(true);
+            $objValidation->setShowDropDown(true);
+            $objValidation->setErrorTitle('Input error');
+            $objValidation->setError('Value is not in list.');
+            $objValidation->setPromptTitle('Pick from list');
+            $objValidation->setPrompt('Please pick a value from the drop-down list.');
+            $objValidation->setFormula1('"TRUE, FALSE"');
+            //Init Cell Data Validation
+            $objValidation = $phpExcelObject->getActiveSheet()->getCell('G'.$row)->getDataValidation();
+            $objValidation->setType( PHPExcel_Cell_DataValidation::TYPE_LIST );
+            $objValidation->setErrorStyle( PHPExcel_Cell_DataValidation::STYLE_INFORMATION );
+            $objValidation->setAllowBlank(false);
+            $objValidation->setShowInputMessage(true);
+            $objValidation->setShowErrorMessage(true);
+            $objValidation->setShowDropDown(true);
+            $objValidation->setErrorTitle('Input error');
+            $objValidation->setError('Value is not in list.');
+            $objValidation->setPromptTitle('Pick from list');
+            $objValidation->setPrompt('Please pick a value from the drop-down list.');
+            $objValidation->setFormula1('"TRUE, FALSE"');
+        }
+
+        // create the writer
+        $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
+        $response = $this->get('phpexcel')->createStreamedResponse($writer);
+        // adding headers
+        $dispositionHeader = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            'product-'.date('YmdHis').'.xls'
+        );
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+        $response->headers->set('Content-Disposition', $dispositionHeader);
+
+        return $response;
     }
 
     /**

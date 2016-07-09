@@ -2,6 +2,7 @@
 
 namespace TNQSoft\AdminBundle\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use TNQSoft\CommonBundle\Service\PaginatorService;
 use TNQSoft\CommonBundle\Repository\BaseRepository;
 use TNQSoft\AdminBundle\Entity\ProductCategory;
@@ -180,6 +181,20 @@ class ProductRepository extends BaseRepository
             ->orderBy('p.createdAt', 'DESC')
             ->getQuery()
             ->setMaxResults($max);
+
+        return $query->getResult();
+    }
+
+    /**
+     * Get All Product
+     *
+     * @return ArrayCollection
+     */
+    public function getAllProduct()
+    {
+        $query = $this->getRepository()->createQueryBuilder('p')
+            ->orderBy('p.createdAt', 'DESC')
+            ->getQuery();
 
         return $query->getResult();
     }
