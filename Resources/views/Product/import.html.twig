@@ -1,0 +1,23 @@
+{% extends 'TNQSoftAdminBundle:Layout:layout.html.twig' %}
+{##############################################################################}
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('admin_dashboard') }}"><i class="fa fa-home"></i> Quản trị</a></li>
+        <li><a href="{{ path('admin_product_list') }}">Sản phẩm</a></li>
+        <li class="active">Cập nhật từ Excel</li>
+    </ol>
+{% endblock %}
+{##############################################################################}
+{% block body %}
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>Sản phẩm
+                <small>cập nhật từ Excel</small>
+            </h1>
+        </div>
+
+        {% include 'TNQSoftAdminBundle:Product:_form_import.html.twig' with {'form': form} %}
+
+    </div>
+    <!-- /container -->
+{% endblock %}

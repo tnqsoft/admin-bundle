@@ -1,0 +1,25 @@
+{% form_theme form 'TNQSoftAdminBundle:Form:form_layout.html.twig' %}
+
+{{ form_start(form) }}
+
+<p class="text-right">
+    <button type="submit" class="btn btn-primary">
+        <i class="fa fa-save"></i>
+        Thực hiện
+    </button>
+    <a href="{{ path('admin_photo_list') }}" class="btn btn-default">
+        <i class="fa fa-reply"></i>
+        Quay lại
+    </a>
+</p>
+
+<div class="row">
+    <div class="col-sm-2">&nbsp;</div>
+    <div class="col-sm-10">
+        {% include 'TNQSoftAdminBundle:Common:flash_message.html.twig' %}
+    </div>
+</div>
+
+{{ form_widget(form) }}
+
+{{ form_end(form) }}

@@ -54,7 +54,7 @@
     {% spaceless %}
 
     {{ block('form_widget') }}
-    {% if image_url is not null %}
+    {% if image_url is defined and image_url is not null %}
         <p class="p-t-10"><img src="{{ asset(image_url)|imagine_filter('thumb_100x75') }}" class="thumbnail"/></p>
     {% endif %}
 

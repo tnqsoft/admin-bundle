@@ -4,6 +4,8 @@ namespace TNQSoft\AdminBundle\Controller;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
+use \PHPExcel_Cell_DataValidation;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -11,11 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 use TNQSoft\AdminBundle\Form\Type\ProductCategoryType;
 use TNQSoft\AdminBundle\Entity\ProductCategory;
 use TNQSoft\AdminBundle\Form\Type\ProductType;
+use TNQSoft\AdminBundle\Form\Type\ProductImportType;
 use TNQSoft\AdminBundle\Entity\Product;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-
-use \PHPExcel_Cell_DataValidation;
 
 /**
  * @Route("/product")
@@ -173,6 +174,27 @@ class ProductController extends Controller
         return $response;
     }
 
+    /**
+     * @Route("/import", name="admin_product_import_excel")
+     * @Method({"GET", "POST"})
+     */
+    public function importExcelAction(Request $request)
+    {
+        $form = $this->createForm(ProductImportType::class);
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                //$post = $form->getData();
+                echo 'OK';die;
+            }
+        }
+
+        return $this->render('TNQSoftAdminBundle:Product:import.html.twig',
+            array(
+                'form' => $form->createView(),
+            )
+        );
+    }
     /**
      * @Route("/create", name="admin_product_create")
      * @Method({"GET", "POST"})
