@@ -29,6 +29,24 @@ class ProductController extends Controller
         $paginator->setContainer($this->container);
         $paginator->setRequest($request);
 
+        if ($request->isMethod('POST')) {
+            if($request->request->get('action', '') === 'update-price') {
+                $listUpdate = $request->request->get('prices', array());
+                if(!empty($listUpdate)) {
+                    foreach($listUpdate as $id => $newPrice) {
+                        $product = $productRepository->findOneById($id);
+                        if (null !== $product) {
+                            $product->setPrice($newPrice);
+                            $productRepository->persist($product);
+                        }
+                    }
+                    $productRepository->flush();
+                }
+            }
+            $request->getSession()->getFlashBag()->add('success', 'Cập nhật giá thành công');
+            return $this->redirect($this->generateUrl('admin_product_list', $request->query->all()));
+        }
+
         return $this->render('TNQSoftAdminBundle:Product:index.html.twig',
             array('paginator' => $paginator)
         );

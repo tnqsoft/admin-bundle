@@ -23,6 +23,38 @@
         var _a = '<a href="#" class="table-product-price-text">'+_value+'</a>';
         _parent.html(_a);
     });
+
+    function checkAction() {
+        var _action = $('select[name="action"]').val();
+        if(_action === '') {
+            return false;
+        } else if(_action === 'update-price') {
+            return checkUpdatePrice();
+        }
+
+        return true;
+    }
+
+    function checkUpdatePrice() {
+        var _check = true;
+        $('.table-product-price .text-error').remove();
+        if($('.table-product-price input').length === 0) {
+            _check = false;
+        } else {
+            $('.table-product-price input').each(function(){
+                var _parent = $(this).closest(".table-product-price");
+                if($.trim($(this).val()) === '') {
+                    _parent.append('<div class="text-danger text-error"><small>Cần nhập giá trị.</small></div>');
+                    _check = false;
+                } else if(isNaN($.trim($(this).val())) === true) {
+                    _parent.append('<div class="text-danger text-error"><small>Chỉ nhập giá trị số.</small></div>');
+                    _check = false;
+                }
+            });
+        }
+
+        return _check;
+    }
 </script>
 {% endblock %}
 {##############################################################################}
@@ -39,6 +71,8 @@
         <a href="{{ path('admin_product_create') }}" class="btn btn-default"><i class="fa fa-cloud-download"></i> Xuất ra Excel</a>
         <a href="{{ path('admin_product_create') }}" class="btn btn-default"><i class="fa fa-cloud-upload"></i> Cập nhật từ Excel</a>
     </p>
+
+    <form action="" method="post" onsubmit="return checkAction();">
 
     <div class="table-responsive">
         <table class="table table-bordered table-hover table-striped">
@@ -111,6 +145,19 @@
             </tbody>
         </table>
     </div><!-- /.table-responsive -->
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            Hành động:
+            <select name="action" class="form-control form-control-inline">
+                <option value="">--Lựa chọn hành động--</option>
+                <option value="update-price">Cập nhật giá</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Thực hiện</button>
+        </div>
+    </div>
+
+    </form>
 
     {{ paginator.renderLinks()|raw }}
 </div> <!-- /container -->

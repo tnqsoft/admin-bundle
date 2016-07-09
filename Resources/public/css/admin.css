@@ -176,3 +176,8 @@ footer {
     color: #ff0000;
     text-decoration: none;
 }
+
+.form-control-inline {
+    display: inline-block;
+    width: auto;
+}
