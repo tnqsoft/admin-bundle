@@ -14,6 +14,7 @@ parameters:
     tnqsoft_admin.repository.product_img.class: TNQSoft\AdminBundle\Repository\ProductImgRepository
     tnqsoft_admin.repository.menu.class: TNQSoft\AdminBundle\Repository\MenuRepository
     tnqsoft_admin.repository.banner.class: TNQSoft\AdminBundle\Repository\BannerRepository
+    tnqsoft_admin.repository.sale.class: TNQSoft\AdminBundle\Repository\SaleRepository
 
     tnqsoft_admin.service.base.class: TNQSoft\AdminBundle\Service\BaseService
     tnqsoft_admin.service.user.class: TNQSoft\AdminBundle\Service\UserService
@@ -70,6 +71,9 @@ services:
             - [init, ["@doctrine.orm.default_entity_manager", %tnqsoft_admin.bundle.admin%]]
     tnqsoft_admin.repository.banner:
         class: %tnqsoft_admin.repository.banner.class%
+        parent: tnqsoft_common.repository.base
+    tnqsoft_admin.repository.sale:
+        class: %tnqsoft_admin.repository.sale.class%
         parent: tnqsoft_common.repository.base
 
     tnqsoft_admin.service.base:

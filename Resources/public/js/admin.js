@@ -156,3 +156,8 @@ $('#product_price').change(function(){
 $('.dashboard-quick-menu li a').matchHeight();
 
 $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+
+$('.datetimepicker').datetimepicker({
+    format: 'YYYY-MM-DD HH:mm:00',
+    locale: 'vi'
+});
