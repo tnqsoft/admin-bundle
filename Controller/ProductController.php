@@ -17,6 +17,7 @@ use TNQSoft\AdminBundle\Form\Type\ProductImportType;
 use TNQSoft\AdminBundle\Entity\Product;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use TNQSoft\CommonBundle\Service\FileUploader;
 
 /**
  * @Route("/product")
@@ -159,14 +160,14 @@ class ProductController extends Controller
         }
 
         // create the writer
-        $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
+        $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel2007');
         $response = $this->get('phpexcel')->createStreamedResponse($writer);
         // adding headers
         $dispositionHeader = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            'product-'.date('YmdHis').'.xls'
+            'product-'.date('YmdHis').'.xlsx'
         );
-        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8');
         $response->headers->set('Pragma', 'public');
         $response->headers->set('Cache-Control', 'maxage=1');
         $response->headers->set('Content-Disposition', $dispositionHeader);
@@ -180,12 +181,49 @@ class ProductController extends Controller
      */
     public function importExcelAction(Request $request)
     {
+        $productRepository = $this->get('tnqsoft_admin.repository.product');
         $form = $this->createForm(ProductImportType::class);
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                //$post = $form->getData();
-                echo 'OK';die;
+                $data = $form->getData();
+                $uploadDir = realpath($this->get('kernel')->getRootDir() . '/../var').DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR.'product'.DIRECTORY_SEPARATOR;
+                $uploader = new FileUploader($uploadDir);
+                $fileName = $uploader->upload($data['file']);
+
+                $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject($uploadDir.$fileName);
+                $objWorksheet = $phpExcelObject->getActiveSheet();
+                $highestRow = $objWorksheet->getHighestRow();
+                $countProcess = 0;
+                for ($row = 2; $row <= $highestRow; ++$row) {
+                    $id = $objWorksheet->getCellByColumnAndRow(0, $row)->getValue();
+                    $newUPC = $objWorksheet->getCellByColumnAndRow(1, $row)->getValue();
+                    $newTitle = $objWorksheet->getCellByColumnAndRow(2, $row)->getValue();
+                    $newOutOfStock = filter_var($objWorksheet->getCellByColumnAndRow(3, $row)->getValue(), FILTER_VALIDATE_BOOLEAN);
+                    $newIsNew = filter_var($objWorksheet->getCellByColumnAndRow(4, $row)->getValue(), FILTER_VALIDATE_BOOLEAN);
+                    $newIsSpecial = filter_var($objWorksheet->getCellByColumnAndRow(5, $row)->getValue(), FILTER_VALIDATE_BOOLEAN);
+                    $newIsActive = filter_var($objWorksheet->getCellByColumnAndRow(6, $row)->getValue(), FILTER_VALIDATE_BOOLEAN);
+                    $newPrice = $objWorksheet->getCellByColumnAndRow(7, $row)->getValue();
+
+                    $product = $productRepository->findOneById($id);
+                    if (null !== $product) {
+                        $product->setUpc($newUPC);
+                        $product->setTitle($newTitle);
+                        $product->setOutOfStock($newOutOfStock);
+                        $product->setIsNew($newIsNew);
+                        $product->setIsSpecial($newIsSpecial);
+                        $product->setIsActive($newIsActive);
+                        $product->setPrice($newPrice);
+                        $productRepository->persist($product);
+                        $countProcess++;
+                    }
+                }
+                if($countProcess > 0) {
+                    $productRepository->flush();
+                }
+
+                $request->getSession()->getFlashBag()->add('success', 'Cập nhật thành công '.$countProcess.' sản phẩm');
+                return $this->redirect($this->generateUrl('admin_product_import_excel'));
             }
         }
 

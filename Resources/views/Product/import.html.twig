@@ -1,5 +1,17 @@
 {% extends 'TNQSoftAdminBundle:Layout:layout.html.twig' %}
 {##############################################################################}
+{% block javascripts %}
+    <script>
+        $('.btn-import-process').click(function(e){
+            e.preventDefault();
+            jQuery('#modalImport').modal('show').on('click', '.btn-confirm-import', function() {
+                jQuery('#modalImport').modal('hide');
+                $('form[name="product_import"]').submit();
+            });
+        });
+    </script>
+{% endblock %}
+{##############################################################################}
 {% block breadcrumb %}
     <ol class="breadcrumb">
         <li><a href="{{ path('admin_dashboard') }}"><i class="fa fa-home"></i> Quản trị</a></li>
@@ -17,6 +29,8 @@
         </div>
 
         {% include 'TNQSoftAdminBundle:Product:_form_import.html.twig' with {'form': form} %}
+
+        {% include 'TNQSoftAdminBundle:Common:Modal/import_confirm.html.twig' %}
 
     </div>
     <!-- /container -->

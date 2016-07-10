@@ -1,13 +1,13 @@
 {% form_theme form 'TNQSoftAdminBundle:Form:form_layout.html.twig' %}
-
+{##############################################################################}
 {{ form_start(form) }}
 
 <p class="text-right">
-    <button type="submit" class="btn btn-primary">
+    <button type="button" class="btn btn-primary btn-import-process">
         <i class="fa fa-save"></i>
         Thực hiện
     </button>
-    <a href="{{ path('admin_photo_list') }}" class="btn btn-default">
+    <a href="{{ path('admin_product_list') }}" class="btn btn-default">
         <i class="fa fa-reply"></i>
         Quay lại
     </a>

@@ -28,6 +28,7 @@ class ProductImportType extends AbstractType
         $builder
             ->add('file', FileType::class, array(
                 'label' => 'Excel file',
+                'attr'=>array('help'=>'Hỗ trợ file Excel (.xlsx). Dung lượng không quá 2M.'),
                 'required' => true
             ))
         ;
@@ -43,13 +44,9 @@ class ProductImportType extends AbstractType
                 new File(array(
                     'maxSize' => '2M',
                     'mimeTypes' => array(
-                        'application/vnd.ms-excel',
-                        'application/excel',
-                        'application/vnd.msexcel',
-                        'application/xls',
-                        'text/excel',
+                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                     ),
-                    'mimeTypesMessage' => 'Chỉ hỗ trợ nhập từ file Excel 97-2003 (.xls).',
+                    'mimeTypesMessage' => 'Chỉ hỗ trợ nhập từ file Excel (.xlsx).',
                     'maxSizeMessage' => 'Dung lượng file nhập lên tối đa 2 Mega byte.',
                 ))
             ),
