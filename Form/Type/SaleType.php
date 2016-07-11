@@ -13,6 +13,9 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+
+use TNQSoft\AdminBundle\Form\Type\ProductType;
 
 class SaleType extends AbstractType
 {
@@ -47,8 +50,10 @@ class SaleType extends AbstractType
             ))
             ->add('description', TextareaType::class, array(
                 'label' => 'Chú thích',
-                'attr' => array('class' => 'summernote')
+                'attr' => array('class' => 'summernote'),
+                'required' => false,
             ))
+            ->add('products', null, array())
             ->add('isActive', null, array(
                 'label' => 'Trạng thái',
                 'attr' => array('class' => 'checkbox-switch-active')

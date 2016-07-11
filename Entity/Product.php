@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use TNQSoft\AdminBundle\Entity\ProductImg;
 use TNQSoft\AdminBundle\Entity\ProductCategory;
 use TNQSoft\AdminBundle\Entity\Partner;
+use TNQSoft\AdminBundle\Entity\Sale;
 
 /**
  * @ORM\Table(name="product")
@@ -113,6 +114,14 @@ class Product
      */
     protected $viewNumber;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Sale", inversedBy="products")
+     * @ORM\JoinTable(name="product_sale")
+     */
+    protected $sales;
+
     public function __construct()
     {
         $this->isActive = true;
@@ -120,7 +129,13 @@ class Product
         $this->isSpecial = false;
         $this->outOfStock = true;
         $this->listPhoto = new ArrayCollection();
+        $this->sales = new ArrayCollection();
         $this->price = 0;
+    }
+
+    public function __toString()
+    {
+        return '('.$this->getUpc().') '.$this->getTitle();
     }
 
     /**
@@ -551,5 +566,58 @@ class Product
         return null === $photoDefault
             ? null
             : $photoDefault->getWebPath();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getSales()
+    {
+        return $this->sales;
+    }
+
+    /**
+     * @param ArrayCollection $sales
+     * @return Product
+     */
+    public function setSales(ArrayCollection $sales)
+    {
+        $this->sales = $sales;
+        return $this;
+    }
+
+    /**
+     * Clear all Sales
+     *
+     * @return Product
+     */
+    public function clearSales() {
+        $this->sales->clear();
+
+        return $this;
+    }
+
+    /**
+     * Has Sale
+     *
+     * @param  Sale $sale
+     * @return booleans
+     */
+    public function hasSale(Sale $sale) {
+        return $this->sales->contains($sale);
+    }
+    
+    public function addSale(Sale $sale)
+    {
+        if ( !$this->hasSale($sale) ) {
+            $this->sales[] = $sale;
+            $sale->addProduct($this);
+        }
+    }
+
+    public function removeSale(Sale $sale)
+    {
+        $this->sales->removeElement($sale);
+        $sale->removeProduct($this);
     }
 }

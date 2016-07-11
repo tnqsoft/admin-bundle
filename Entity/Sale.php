@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use TNQSoft\CommonBundle\Validator\Constraints\CompareWithField;
+use TNQSoft\AdminBundle\Entity\Product;
 
 /**
  * @ORM\Table(name="sale")
@@ -74,12 +75,25 @@ class Sale
      */
     private $updatedAt;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Product", mappedBy="sales")
+     */
+    protected $products;
+
     public function __construct()
     {
         $this->isActive = true;
         $this->beginDate = new \DateTime();
         $this->endDate = new \DateTime();
         $this->percentage = 10;
+        $this->products = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getTitle();
     }
 
     /**
@@ -250,5 +264,58 @@ class Sale
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
+
+    /**
+     * @param ArrayCollection $products
+     * @return Sale
+     */
+    public function setProducts(ArrayCollection $products)
+    {
+        $this->products = $products;
+        return $this;
+    }
+
+    /**
+     * Clear all Products
+     *
+     * @return Sale
+     */
+    public function clearProducts() {
+        $this->products->clear();
+
+        return $this;
+    }
+
+    /**
+     * Has Product
+     *
+     * @param  Product $product
+     * @return booleans
+     */
+    public function hasProduct(Product $product) {
+        return $this->products->contains($product);
+    }
+
+    public function addProduct(Product $product)
+    {
+        if ( !$this->hasProduct($product) ) {
+            $this->products[] = $product;
+            $product->addTheme($this);
+        }
+    }
+
+    public function removeProduct(Product $product)
+    {
+        $this->products->removeElement($product);
+        $product->removeSale($this);
     }
 }
