@@ -45,6 +45,10 @@ class SaleType extends AbstractType
                 'format' => 'yyyy-MM-dd H:mm:00',
                 'attr' => array('class' => 'datetimepicker')
             ))
+            ->add('description', TextareaType::class, array(
+                'label' => 'Chú thích',
+                'attr' => array('class' => 'summernote')
+            ))
             ->add('isActive', null, array(
                 'label' => 'Trạng thái',
                 'attr' => array('class' => 'checkbox-switch-active')
