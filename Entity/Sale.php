@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
+use TNQSoft\CommonBundle\Validator\Constraints\CompareWithField;
 
 /**
  * @ORM\Table(name="sale")
@@ -45,6 +46,7 @@ class Sale
      *
      * @ORM\Column(name="end_date", type="datetime", nullable=false)
      * @Assert\DateTime()
+     * @CompareWithField(field="beginDate", operator=">=", message="Ngày kết thúc cần lớn hơn ngày bắt đầu.")
      */
     private $endDate;
 

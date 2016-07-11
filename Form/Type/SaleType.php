@@ -36,13 +36,13 @@ class SaleType extends AbstractType
             ->add('begin_date', DateTimeType::class, array(
                 'label' => 'Ngày bắt đầu',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd H:s',
+                'format' => 'yyyy-MM-dd H:mm:00',
                 'attr' => array('class' => 'datetimepicker')
             ))
             ->add('end_date', DateTimeType::class, array(
                 'label' => 'Ngày kết thúc',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd H:s',
+                'format' => 'yyyy-MM-dd H:mm:00',
                 'attr' => array('class' => 'datetimepicker')
             ))
             ->add('isActive', null, array(
