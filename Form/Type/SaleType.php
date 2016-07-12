@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 use TNQSoft\AdminBundle\Form\Type\ProductType;
 
@@ -36,13 +37,13 @@ class SaleType extends AbstractType
                 'attr'=>array('help'=>'Phần trăm giảm giá, ví dụ: 10 (10%)'),
                 'required' => true,
             ))
-            ->add('begin_date', DateTimeType::class, array(
+            ->add('beginDate', DateTimeType::class, array(
                 'label' => 'Ngày bắt đầu',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd H:mm:00',
                 'attr' => array('class' => 'datetimepicker')
             ))
-            ->add('end_date', DateTimeType::class, array(
+            ->add('endDate', DateTimeType::class, array(
                 'label' => 'Ngày kết thúc',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd H:mm:00',
@@ -53,7 +54,20 @@ class SaleType extends AbstractType
                 'attr' => array('class' => 'summernote'),
                 'required' => false,
             ))
-            ->add('products', null, array())
+            ->add('productsId', HiddenType::class, array(
+                //'mapped' => false
+            ))
+            // ->add('productAutocomplete', ChoiceType::class, array(
+            //     'label' => 'Chọn Sản phẩm',
+            //     'attr' => array(
+            //         'placeholder' => 'Lựa chọn sản phẩm',
+            //         'class' => 'product-autocomplete'
+            //     ),
+            //     //'choices'  => array(null),
+            //     'required' => false,
+            //     'mapped' => false
+            // ))
+            //->add('products', null, array())
             ->add('isActive', null, array(
                 'label' => 'Trạng thái',
                 'attr' => array('class' => 'checkbox-switch-active')

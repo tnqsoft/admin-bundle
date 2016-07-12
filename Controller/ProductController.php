@@ -233,6 +233,81 @@ class ProductController extends Controller
             )
         );
     }
+
+    /**
+     * @Route("/autocomplete.json", name="admin_product_autocomplete")
+     */
+    public function autocompleteAction(Request $request)
+    {
+        $q = $request->query->get('q', '');
+        $order = $request->query->get('o', 'title');
+        $direct = $request->query->get('d', 'ASC');
+        $limit = $request->query->get('l', 10);
+
+        $assetor = $this->get('assets.packages');
+        $liipImagine = $this->get('liip_imagine.cache.manager');
+        $productRepository = $this->get('tnqsoft_admin.repository.product');
+        $list = $productRepository->getListForAutocomplete($q, $limit, $order, $direct);
+        $responseData = array(
+            'q' => $q,
+            'total' => count($list),
+            'results' => array(),
+        );
+        foreach($list as $product) {
+            $listPhoto = array();
+            foreach($product->getListPhoto() as $photo) {
+                $picture = $liipImagine->getBrowserPath($assetor->getUrl('bundles/tnqsoftcommon/img/no-picture.png'), 'thumb_600x600');
+                if($photo->getWebPath() !== null) {
+                    $picture = $liipImagine->getBrowserPath($assetor->getUrl($photo->getWebPath()), 'thumb_600x600');
+                }
+                $listPhoto[] = array(
+                    'id' => $photo->getId(),
+                    'title' => $photo->getTitle(),
+                    'picture' => $picture,
+                    'isDefault' => $photo->getIsDefault(),
+                    'isActive' => $photo->getIsActive(),
+                    'createdAt' => $photo->getCreatedAt(),
+                    'updatedAt' => $photo->getUpdatedAt(),
+                );
+            }
+            $picture = $liipImagine->getBrowserPath($assetor->getUrl('bundles/tnqsoftcommon/img/no-picture.png'), 'thumb_600x600');
+            if($product->getWebPath() !== null) {
+                $picture = $liipImagine->getBrowserPath($assetor->getUrl($product->getWebPath()), 'thumb_600x600');
+            }
+            $item = array(
+                'id' => $product->getId(),
+                'text' => $product->getTitle(),
+                'title' => $product->getTitle(),
+                'upc' => $product->getUpc(),
+                'summary' => $product->getSummary(),
+                'price' => $product->getPrice(),
+                'outOfStock' => $product->getOutOfStock(),
+                'isNew' => $product->getIsNew(),
+                'isSpecial' => $product->getIsSpecial(),
+                'isActive' => $product->getIsActive(),
+                'createdAt' => $product->getCreatedAt(),
+                'updatedAt' => $product->getUpdatedAt(),
+                'viewNumber' => $product->getViewNumber(),
+                'category' => array(
+                    'id' => $product->getCategory()->getId(),
+                    'title' => $product->getCategory()->getTitle(),
+                    'picture' => $product->getCategory()->getWebPath(),
+                ),
+                'partner' => array(
+                    'id' => $product->getPartner()->getId(),
+                    'title' => $product->getPartner()->getName(),
+                    'logo' => $product->getPartner()->getWebPath(),
+                ),
+                'listPhoto' => $listPhoto,
+                'picture' => $picture,
+            );
+
+            $responseData['results'][] = $item;
+        }
+
+        return $this->json($responseData);
+    }
+
     /**
      * @Route("/create", name="admin_product_create")
      * @Method({"GET", "POST"})

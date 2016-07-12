@@ -198,4 +198,28 @@ class ProductRepository extends BaseRepository
 
         return $query->getResult();
     }
+
+    /**
+     * Get List For Autocomplete
+     *
+     * @param  string $keyword
+     * @param  integer      $limit
+     * @param  string $orderby
+     * @param  string $direct
+     * @return PaginatorService
+     */
+    public function getListForAutocomplete($keyword, $limit=15, $orderby='createdAt', $direct='DESC')
+    {
+        $query = $this->getRepository()->createQueryBuilder('p')
+            //->leftJoin('Q.listAnswers', 'A')
+            ->where('p.isActive = :isActive')
+            ->andWhere('p.upc LIKE :keyword OR p.title LIKE :keyword OR p.summary LIKE :keyword OR p.content LIKE :keyword')
+            ->setParameter('isActive', true)
+            ->setParameter('keyword', '%'.$keyword.'%')
+            ->orderBy('p.'.$orderby, $direct)
+            ->getQuery()
+            ->setMaxResults($limit);
+
+        return $query->getResult();
+    }
 }

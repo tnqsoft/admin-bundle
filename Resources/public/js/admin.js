@@ -161,3 +161,5 @@ $('.datetimepicker').datetimepicker({
     format: 'YYYY-MM-DD HH:mm:00',
     locale: 'vi'
 });
+
+$('.chosen-select').chosen();

@@ -181,3 +181,15 @@ footer {
     display: inline-block;
     width: auto;
 }
+
+.chosen-container {
+    width: 100% !important;
+}
+
+.product-added,
+.product-added .text-danger {
+    color: #d1d1d1;
+}
+.product-added .btn-add {
+    display: none;
+}

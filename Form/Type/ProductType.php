@@ -32,10 +32,12 @@ class ProductType extends AbstractType
                 'prefixAttributeName' => 'data-level-prefix',
                 'treeLevelField' => 'lvl',
                 'placeholder' => 'Chọn danh mục',
+                'attr' => array('class' => 'chosen-select'),
                 'required' => true
             ))
             ->add('partner', null, array(
                 'placeholder' => 'Chọn đối tác',
+                'attr' => array('class' => 'chosen-select'),
                 'required' => true
             ))
             ->add('upc', TextType::class, array(

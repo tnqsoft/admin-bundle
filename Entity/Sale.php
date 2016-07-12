@@ -82,6 +82,11 @@ class Sale
      */
     protected $products;
 
+    /**
+     * @var string
+     */
+    protected $productsId;
+
     public function __construct()
     {
         $this->isActive = true;
@@ -317,5 +322,23 @@ class Sale
     {
         $this->products->removeElement($product);
         $product->removeSale($this);
+    }
+
+    public function getProductsId()
+    {
+        $tmp = array();
+        foreach($this->products as $product) {
+            $tmp[] = $product->getId();
+        }
+        $this->productsId = implode(',', $tmp);
+
+        return $this->productsId;
+    }
+
+    public function setProductsId($ids)
+    {
+        $this->productsId = $ids;
+
+        return $this;
     }
 }

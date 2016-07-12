@@ -22,7 +22,8 @@ class NewsType extends AbstractType
         $builder
             ->add('category', null, array(
                 'placeholder' => 'Chọn danh mục',
-                'required' => true
+                'attr' => array('class' => 'chosen-select'),
+                'required' => true,
             ))
             ->add('title', TextType::class, array(
                 'label' => 'Tiêu đề'

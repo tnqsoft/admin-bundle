@@ -1,5 +1,156 @@
 {% extends 'TNQSoftAdminBundle:Layout:layout.html.twig' %}
 {##############################################################################}
+{% block javascripts %}
+<script>
+// $('.product-autocomplete').ajaxChosen({
+//     dataType: 'json',
+//     type: 'GET',
+//     url:'{{ path('admin_product_autocomplete') }}',
+//     data: {}
+//     // success: function(data, textStatus, jqXHR){ doSomething(); }
+// },{
+//     processItems: function(data){
+//         var results = [];
+//
+//         if(data.results.length === 1) {
+//             results = {
+//                 id: data.results[0].id,
+//                 text: data.results[0].title
+//             };
+//         } else if(data.results.length > 1) {
+//             for(var i=0; i < data.results.length; i++) {
+//                 results.push({
+//                     id: data.results[i].id,
+//                     text: data.results[i].title
+//                 });
+//             }
+//         }
+//
+//         return results;
+//     },
+//     // useAjax: function(e){ return someCheckboxIsChecked(); },
+//     generateUrl: function(q){
+//         return '{{ path('admin_product_autocomplete') }}?q='+q;
+//     },
+//     loadingImg: '{{ asset('bundles/tnqsoftadmin/img/loading-16x16.gif') }}',
+//     minLength: 3
+// },{
+//     no_results_text: "Không tìm thấy sản phẩm mà bạn tìm: ",
+//     width: "100%"
+// });
+
+var _listIds = $('#sale_productsId').val().split(',');
+var _boxSearch = $('.product-ajax-search-box');
+var _input = $('.txt-search', _boxSearch);
+var _buttonSearch = $('.btn-search', _boxSearch);
+var _tableSrc = $('.table-products', _boxSearch);
+var _tableDes = $('.table-sales', _boxSearch);
+
+$(_buttonSearch).click(function(){
+    searchProduct(_input.val());
+});
+
+function searchProduct(q) {
+    $.ajax({
+        type: 'GET',
+        url: '{{ path('admin_product_autocomplete') }}',
+        dataType: 'json',
+        cache: false,
+        data: {
+            q: q
+        },
+        beforeSend: function() {
+            _input.attr('readonly', 'readonly');
+            _input.attr("disabled", true);
+            _buttonSearch.attr("disabled", true);
+        },
+        success: function(data) {
+            _input.removeAttr('readonly');
+            _input.removeAttr("disabled");
+            _buttonSearch.removeAttr("disabled");
+
+            if(data.results.length > 0) {
+                $('tbody', _tableSrc).empty();
+                for(var i=0; i < data.results.length; i++) {
+                    addItemToTableSrc(data.results[i]);
+                }
+            }
+        }
+    });
+}
+
+function setStatusAdded(id, item) {
+    if(_listIds.indexOf(id) !== -1) {
+        item.addClass('product-added');
+        $('.btn-add', item).hide();
+        $('i[class*="fa-check"]', item).show();
+    } else {
+        item.removeClass('product-added');
+        $('.btn-add', item).show();
+        $('i[class*="fa-check"]', item).hide();
+    }
+}
+
+function addItemToTableSrc(data) {
+    var _item = '<tr data-id="'+data.id+'" data-title="'+data.title+'" data-upc="'+data.upc+'" data-price="'+data.price+'" data-img="'+data.picture+'"><th scope=row>[id]</th><td>[img]</td><td>[title]</td><td>[upc]</td><td><span class="text-danger">[price]</span></td><td class="text-center"><button type="button" class="btn btn-primary btn-add"><i class="fa fa-plus"></i></button><i class="fa fa-check-circle-o fa-2x text-success"></i></td></tr>';
+
+    _item = _item.replace(/\[id\]/g,data.id);
+    _item = _item.replace(/\[title\]/g,data.title);
+    _item = _item.replace(/\[upc\]/g,data.upc);
+    _item = _item.replace(/\[price\]/g,data.price);
+    _item = _item.replace(/\[img\]/g,'<img src="'+data.picture+'" height="30" width="40">');
+    $_item = $(_item);
+
+    setStatusAdded(data.id, $_item);
+
+    $('.btn-add', $_item).click(function(){
+        var _parent = $(this).closest('tr');
+        var data = {
+            id: _parent.data('id'),
+            title: _parent.data('title'),
+            upc: _parent.data('upc'),
+            price: _parent.data('price'),
+            img: _parent.data('img')
+        };
+        addItemToTableDes(data);
+        setStatusAdded(_parent.data('id'), _parent);
+    });
+
+    $('tbody', _tableSrc).append($_item);
+}
+
+function addItemToTableDes(data) {
+    var _item = '<tr data-id="'+data.id+'" data-title="'+data.title+'" data-upc="'+data.upc+'" data-price="'+data.price+'"><th scope=row>[id]</th><td>[img]</td><td>[title]</td><td>[upc]</td><td><span class="text-danger">[price]</span></td><td class="text-center"><button type="button" class="btn btn-danger btn-delete"><i class="fa fa-trash-o"></i></button></td></tr>';
+
+    _item = _item.replace(/\[id\]/g,data.id);
+    _item = _item.replace(/\[title\]/g,data.title);
+    _item = _item.replace(/\[upc\]/g,data.upc);
+    _item = _item.replace(/\[price\]/g,data.price);
+    _item = _item.replace(/\[img\]/g,'<img src="'+data.img+'" height="30" width="40">');
+    $_item = $(_item);
+
+    $('.btn-delete', $_item).click(function(){
+        var _parent = $(this).closest('tr');
+        setStatusAdded(-1, $('tr[data-id="'+_parent.data('id')+'"]', _tableSrc));
+        _listIds = deleteArrayItem(_parent.data('id'), _listIds);
+        $(this).closest('tr').remove();
+    });
+
+    $('tbody', _tableDes).append($_item);
+    _listIds.push(data.id);
+}
+
+function deleteArrayItem(_value, _array) {
+    for(var i=0; i < _array.length; i++) {
+        if(_array[i] == _value) {
+            _array.splice(i, 1);
+        }
+    }
+    return _array;
+}
+</script>
+{% endblock %}
+{##############################################################################}
 {% block breadcrumb %}
 <ol class="breadcrumb">
     <li><a href="{{ path('admin_dashboard') }}"><i class="fa fa-home"></i> Quản trị</a></li>
