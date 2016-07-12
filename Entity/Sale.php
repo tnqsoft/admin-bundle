@@ -295,6 +295,9 @@ class Sale
      * @return Sale
      */
     public function clearProducts() {
+        foreach ($this->products as $product) {
+            $this->removeProductWithSale($product);
+        }
         $this->products->clear();
 
         return $this;
@@ -314,11 +317,16 @@ class Sale
     {
         if ( !$this->hasProduct($product) ) {
             $this->products[] = $product;
-            $product->addTheme($this);
+            $product->addSale($this);
         }
     }
 
     public function removeProduct(Product $product)
+    {
+        $this->products->removeElement($product);
+    }
+
+    public function removeProductWithSale(Product $product)
     {
         $this->products->removeElement($product);
         $product->removeSale($this);
@@ -326,11 +334,13 @@ class Sale
 
     public function getProductsId()
     {
-        $tmp = array();
-        foreach($this->products as $product) {
-            $tmp[] = $product->getId();
+        if(count($this->products) > 0) {
+            $tmp = array();
+            foreach($this->products as $product) {
+                $tmp[] = $product->getId();
+            }
+            $this->productsId = implode(',', $tmp);
         }
-        $this->productsId = implode(',', $tmp);
 
         return $this->productsId;
     }
@@ -338,6 +348,7 @@ class Sale
     public function setProductsId($ids)
     {
         $this->productsId = $ids;
+        $this->clearProducts();
 
         return $this;
     }

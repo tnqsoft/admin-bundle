@@ -615,9 +615,14 @@ class Product
         }
     }
 
-    public function removeSale(Sale $sale)
+    public function removeSaleWithProduct(Sale $sale)
     {
         $this->sales->removeElement($sale);
         $sale->removeProduct($this);
+    }
+
+    public function removeSale(Sale $sale)
+    {
+        $this->sales->removeElement($sale);
     }
 }

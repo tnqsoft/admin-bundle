@@ -1,0 +1,196 @@
+<script>
+    var _boxSearch = $('.product-ajax-search-box');
+    var _input = $('.txt-search', _boxSearch);
+    var _buttonSearch = $('.btn-search', _boxSearch);
+    var _tableSrc = $('.table-products', _boxSearch);
+    var _tableDes = $('.table-sales', _boxSearch);
+    var _paginationBox = $('.pagination', _boxSearch);
+    var _inputHolder = $('{{ input_holder }}');
+    var _listIds = (_inputHolder.val() != '')?_inputHolder.val().split(','):[];
+
+    for(var i=0; i < _listIds.length; i++) {
+        _listIds[i] = parseInt(_listIds[i], 10);
+    }
+
+    $(_buttonSearch).click(function(){
+        searchProduct(_input.val());
+    });
+
+    function searchProduct(q, p) {
+        var _page = 1;
+        if(typeof p !== 'undefined') {
+            _page = p;
+        }
+        $.ajax({
+            type: 'GET',
+            url: '{{ path('admin_product_autocomplete') }}',
+            dataType: 'json',
+            cache: false,
+            data: {
+                q: q,
+                page: _page
+            },
+            beforeSend: function() {
+                lockStage();
+            },
+            success: function(data) {
+                unLockStage();
+                if(data.results.length > 0) {
+                    $('tbody', _tableSrc).empty();
+                    for(var i=0; i < data.results.length; i++) {
+                        addItemToTableSrc(data.results[i]);
+                    }
+                    setStatusAdded();
+                    displayPagination(data);
+                }
+            }
+        });
+    }
+
+    function displayPagination(data) {
+        var _btnPrev = $('<li><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>');
+        var _btnNext = $('<li><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>');
+        var _btnTemplate = '<li><a href="#">[page]</a></li>';
+
+        _paginationBox.empty();
+        if(data.pages <= 1) {
+            return false;
+        }
+
+        _btnPrev.data('q', data.q);
+        _btnPrev.data('p', data.currentPage - 1);
+
+        _btnNext.data('q', data.q);
+        _btnNext.data('p', data.currentPage + 1);
+
+        if(data.currentPage === 1) {
+            _btnPrev.addClass('disabled');
+            _btnPrev.data('p', '#');
+        }
+
+        if(data.currentPage === data.pages) {
+            _btnNext.addClass('disabled');
+            _btnNext.data('p', '#');
+        }
+
+        _paginationBox.append(_btnPrev);
+        for(var i=1; i <= data.pages; i++ ) {
+            var _page = $(_btnTemplate.replace(/\[page\]/g,i));
+            _page.data('q', data.q);
+            _page.data('p', i);
+            if( i === data.currentPage) {
+                _page.addClass('active');
+                _page.data('p', '#');
+            }
+            _paginationBox.append(_page);
+        }
+        _paginationBox.append(_btnNext);
+
+        $('li', _paginationBox).each(function(){
+            var _this = $(this);
+            $('a', $(this)).click(function(e){
+                e.preventDefault();
+                var _q = _this.data('q');
+                var _p = _this.data('p');
+                if(_p === '#') {
+                    return false;
+                }
+                searchProduct(_q, _p);
+            })
+        });
+    }
+
+    function setStatusAdded() {
+        $('tbody tr', _tableSrc).each(function(){
+            if(_listIds.indexOf($(this).data('id')) !== -1) {
+                $(this).addClass('product-added');
+                $('.btn-add', $(this)).hide();
+                $('i[class*="fa-check"]', $(this)).show();
+            } else {
+                $(this).removeClass('product-added');
+                $('.btn-add', $(this)).show();
+                $('i[class*="fa-check"]', $(this)).hide();
+            }
+        });
+    }
+
+    function addItemToTableSrc(data) {
+        var _item = '<tr data-id="'+data.id+'" data-title="'+data.title+'" data-upc="'+data.upc+'" data-price="'+data.price+'" data-img="'+data.thumb+'"><th scope=row>[id]</th><td>[img]</td><td>[title]</td><td>[upc]</td><td><span class="text-danger">[price]</span></td><td class="text-center"><button type="button" class="btn btn-primary btn-add"><i class="fa fa-plus"></i></button><i class="fa fa-check-circle-o fa-2x text-success"></i></td></tr>';
+
+        _item = _item.replace(/\[id\]/g,data.id);
+        _item = _item.replace(/\[title\]/g,data.title);
+        _item = _item.replace(/\[upc\]/g,data.upc);
+        _item = _item.replace(/\[price\]/g,data.price);
+        _item = _item.replace(/\[img\]/g,'<img src="'+data.thumb+'" height="30" width="40">');
+        $_item = $(_item);
+
+        $('tbody', _tableSrc).append($_item);
+    }
+
+    function addItemToTableDes(data) {
+        var _item = '<tr data-id="'+data.id+'" data-title="'+data.title+'" data-upc="'+data.upc+'" data-price="'+data.price+'"><th scope=row>[id]</th><td>[img]</td><td>[title]</td><td>[upc]</td><td><span class="text-danger">[price]</span></td><td class="text-center"><button type="button" class="btn btn-danger btn-delete"><i class="fa fa-trash-o"></i></button></td></tr>';
+
+        _item = _item.replace(/\[id\]/g,data.id);
+        _item = _item.replace(/\[title\]/g,data.title);
+        _item = _item.replace(/\[upc\]/g,data.upc);
+        _item = _item.replace(/\[price\]/g,data.price);
+        _item = _item.replace(/\[img\]/g,'<img src="'+data.img+'" height="30" width="40">');
+        $_item = $(_item);
+
+        $('tbody', _tableDes).append($_item);
+        _listIds.push(data.id);
+        _inputHolder.val(_listIds.join());
+    }
+
+    function deleteArrayItem(_value, _array) {
+        for(var i=0; i < _array.length; i++) {
+            if(_array[i] == _value) {
+                _array.splice(i, 1);
+            }
+        }
+        return _array;
+    }
+
+    _tableSrc.on('click', '.btn-add', function(){
+        var _parent = $(this).closest('tr');
+        var data = {
+            id: _parent.data('id'),
+            title: _parent.data('title'),
+            upc: _parent.data('upc'),
+            price: _parent.data('price'),
+            img: _parent.data('img')
+        };
+        addItemToTableDes(data);
+        setStatusAdded();
+    });
+
+    _tableDes.on('click', '.btn-delete', function(){
+        var _parent = $(this).closest('tr');
+        _listIds = deleteArrayItem(_parent.data('id'), _listIds);
+        _inputHolder.val(_listIds.join());
+        $(this).closest('tr').remove();
+        setStatusAdded();
+    });
+
+    _input.enterKey(function () {
+        searchProduct($(this).val());
+    });
+
+    function lockStage() {
+        _input.attr('readonly', 'readonly');
+        _input.attr("disabled", true);
+        _buttonSearch.attr("disabled", true);
+        $('.btn-add', _tableSrc).attr("disabled", true);
+        $('.btn-delete', _tableDes).attr("disabled", true);
+    }
+
+    function unLockStage() {
+        _input.removeAttr('readonly');
+        _input.removeAttr("disabled");
+        _buttonSearch.removeAttr("disabled");
+        $('.btn-add', _tableSrc).removeAttr("disabled");
+        $('.btn-delete', _tableDes).removeAttr("disabled");
+    }
+
+    searchProduct('');
+</script>

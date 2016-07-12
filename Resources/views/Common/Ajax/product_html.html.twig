@@ -1,0 +1,66 @@
+<div class="product-ajax-search-box">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="input-group">
+                <input type="text" class="form-control txt-search" placeholder="Tìm sản phẩm...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default btn-search" type="button"><i class="fa fa-search"></i></button>
+                        </span>
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <table class="table table-hover table-bordered table-striped table-products">
+                <caption>Sản phẩm tìm.</caption>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Ảnh</th>
+                    <th>Tên SP</th>
+                    <th>Mã SP</th>
+                    <th>Giá</th>
+                    <th width="%" nowrap>Thêm</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <nav>
+                <ul class="pagination"></ul>
+            </nav>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <table class="table table-hover table-bordered table-striped  table-sales">
+                <caption>{{ table_des_title }}</caption>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Ảnh</th>
+                    <th>Tên SP</th>
+                    <th>Mã SP</th>
+                    <th>Giá</th>
+                    <th width="%" nowrap>Thêm</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for record in listProducts %}
+                <tr data-id="{{ record.id }}" data-title="{{ record.title }}" data-upc="{{ record.upc }}" data-price="{{ record.price }}">
+                    <th scope="row">{{ record.id }}</th>
+                    <td>
+                        {% if record.webPath is not null %}
+                            <img src="{{ asset(record.webPath)|imagine_filter('thumb_60x45') }}" height="30" width="40"/>
+                        {% else %}
+                            <img src="{{ asset('bundles/tnqsoftcommon/img/no-picture.png')|imagine_filter('thumb_60x45') }}" height="30" width="40"/>
+                        {% endif %}
+                    </td>
+                    <td>{{ record.title }}</td>
+                    <td>{{ record.upc }}</td>
+                    <td><span class="text-danger">{{ record.price }}</span></td>
+                    <td class="text-center"><button type="button" class="btn btn-danger btn-delete"><i class="fa fa-trash-o"></i></button></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

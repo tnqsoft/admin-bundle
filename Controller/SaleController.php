@@ -47,6 +47,18 @@ class SaleController extends Controller
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $sale = $form->getData();
+
+                $productRepository = $this->get('tnqsoft_admin.repository.product');
+                if(!empty($sale->getProductsId())) {
+                    $ids = explode(",", $sale->getProductsId());
+                    foreach ($ids as $productId) {
+                        $product = $productRepository->findOneById($productId);
+                        if(null !== $product) {
+                            $sale->addProduct($product);
+                        }
+                    }
+                }
+
                 $saleRepository = $this->get('tnqsoft_admin.repository.sale');
                 $saleRepository->persistAndFlush($sale);
                 $request->getSession()->getFlashBag()->add('success', 'Tạo bản ghi thành công');
@@ -83,7 +95,18 @@ class SaleController extends Controller
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $sale = $form->getData();
-                //$sale->setUpdatedAt();
+
+                $productRepository = $this->get('tnqsoft_admin.repository.product');
+                if(!empty($sale->getProductsId())) {
+                    $ids = explode(",", $sale->getProductsId());
+                    foreach ($ids as $productId) {
+                        $product = $productRepository->findOneById($productId);
+                        if(null !== $product) {
+                            $sale->addProduct($product);
+                        }
+                    }
+                }
+
                 $saleRepository->persistAndFlush($sale);
                 $request->getSession()->getFlashBag()->add('success', 'Cập nhật bản ghi có id '.$sale->getId().' thành công');
 

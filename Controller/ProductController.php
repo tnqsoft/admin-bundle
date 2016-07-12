@@ -247,23 +247,34 @@ class ProductController extends Controller
         $assetor = $this->get('assets.packages');
         $liipImagine = $this->get('liip_imagine.cache.manager');
         $productRepository = $this->get('tnqsoft_admin.repository.product');
-        $list = $productRepository->getListForAutocomplete($q, $limit, $order, $direct);
+
+        $paginator = $productRepository->getListPaginationBySearch($q, $limit, $order, $direct);
+        $paginator->setContainer($this->container);
+        $paginator->setRequest($request);
+
         $responseData = array(
             'q' => $q,
-            'total' => count($list),
+            'total' => $paginator->getTotalRecord(),
+            'pages' => $paginator->getMaxpage(),
+            'currentPage' => $paginator->getCurrentPage(),
             'results' => array(),
         );
-        foreach($list as $product) {
+        foreach($paginator as $product) {
             $listPhoto = array();
             foreach($product->getListPhoto() as $photo) {
                 $picture = $liipImagine->getBrowserPath($assetor->getUrl('bundles/tnqsoftcommon/img/no-picture.png'), 'thumb_600x600');
                 if($photo->getWebPath() !== null) {
                     $picture = $liipImagine->getBrowserPath($assetor->getUrl($photo->getWebPath()), 'thumb_600x600');
                 }
+                $pictureThumb = $liipImagine->getBrowserPath($assetor->getUrl('bundles/tnqsoftcommon/img/no-picture.png'), 'thumb_60x45');
+                if($photo->getWebPath() !== null) {
+                    $pictureThumb = $liipImagine->getBrowserPath($assetor->getUrl($photo->getWebPath()), 'thumb_60x45');
+                }
                 $listPhoto[] = array(
                     'id' => $photo->getId(),
                     'title' => $photo->getTitle(),
                     'picture' => $picture,
+                    'thumb' => $pictureThumb,
                     'isDefault' => $photo->getIsDefault(),
                     'isActive' => $photo->getIsActive(),
                     'createdAt' => $photo->getCreatedAt(),
@@ -273,6 +284,10 @@ class ProductController extends Controller
             $picture = $liipImagine->getBrowserPath($assetor->getUrl('bundles/tnqsoftcommon/img/no-picture.png'), 'thumb_600x600');
             if($product->getWebPath() !== null) {
                 $picture = $liipImagine->getBrowserPath($assetor->getUrl($product->getWebPath()), 'thumb_600x600');
+            }
+            $pictureThumb = $liipImagine->getBrowserPath($assetor->getUrl('bundles/tnqsoftcommon/img/no-picture.png'), 'thumb_60x45');
+            if($product->getWebPath() !== null) {
+                $pictureThumb = $liipImagine->getBrowserPath($assetor->getUrl($product->getWebPath()), 'thumb_60x45');
             }
             $item = array(
                 'id' => $product->getId(),
@@ -300,6 +315,7 @@ class ProductController extends Controller
                 ),
                 'listPhoto' => $listPhoto,
                 'picture' => $picture,
+                'thumb' => $pictureThumb,
             );
 
             $responseData['results'][] = $item;
