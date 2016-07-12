@@ -32,10 +32,12 @@ class ProductType extends AbstractType
                 'prefixAttributeName' => 'data-level-prefix',
                 'treeLevelField' => 'lvl',
                 'placeholder' => 'Chọn danh mục',
+                'attr' => array('class' => 'chosen-select'),
                 'required' => true
             ))
             ->add('partner', null, array(
                 'placeholder' => 'Chọn đối tác',
+                'attr' => array('class' => 'chosen-select'),
                 'required' => true
             ))
             ->add('upc', TextType::class, array(
@@ -61,6 +63,14 @@ class ProductType extends AbstractType
             ))
             ->add('isActive', null, array(
                 'label' => 'Trạng thái',
+                'attr' => array('class' => 'checkbox-switch-active')
+            ))
+            ->add('isNew', null, array(
+                'label' => 'Hàng mới',
+                'attr' => array('class' => 'checkbox-switch-active')
+            ))
+            ->add('isSpecial', null, array(
+                'label' => 'Hàng đặc biệt',
                 'attr' => array('class' => 'checkbox-switch-active')
             ))
             ->add('listPhoto', CollectionType::class, array(

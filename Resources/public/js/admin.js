@@ -154,3 +154,24 @@ $('#product_price').change(function(){
 });
 
 $('.dashboard-quick-menu li a').matchHeight();
+
+$("body").tooltip({ selector: '[data-toggle=tooltip]' });
+
+$('.datetimepicker').datetimepicker({
+    format: 'YYYY-MM-DD HH:mm:00',
+    locale: 'vi'
+});
+
+$('.chosen-select').chosen();
+
+$.fn.enterKey = function (fnc) {
+    return this.each(function () {
+        $(this).keypress(function (ev) {
+            var keycode = (ev.keyCode ? ev.keyCode : ev.which);
+            if (keycode == '13') {
+                ev.preventDefault();
+                fnc.call(this, ev);
+            }
+        });
+    });
+};

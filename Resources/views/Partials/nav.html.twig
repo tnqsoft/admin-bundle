@@ -65,7 +65,7 @@
                         </li>#}
                     </ul>
                 </li>
-                <li class="dropdown {% if current_router in ['admin_partner_list', 'admin_product_category_list', 'admin_product_list', 'admin_testimonial_list'] %}active{% endif %}">
+                <li class="dropdown {% if current_router in ['admin_partner_list', 'admin_product_category_list', 'admin_product_list', 'admin_testimonial_list', 'admin_sale_list'] %}active{% endif %}">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cửa hàng
                         <span class="caret"></span>
                     </a>
@@ -78,6 +78,9 @@
                         </li>
                         <li>
                             <a href="{{ path('admin_product_list') }}">Sản phẩm</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_sale_list') }}">Khuyến mại</a>
                         </li>
                         <li role="separator" class="divider"></li>
                         <li>

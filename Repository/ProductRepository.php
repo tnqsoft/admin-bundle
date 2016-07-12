@@ -2,7 +2,9 @@
 
 namespace TNQSoft\AdminBundle\Repository;
 
-use TNQSoft\AdminBundle\Service\PaginatorService;
+use Doctrine\Common\Collections\ArrayCollection;
+use TNQSoft\CommonBundle\Service\PaginatorService;
+use TNQSoft\CommonBundle\Repository\BaseRepository;
 use TNQSoft\AdminBundle\Entity\ProductCategory;
 use TNQSoft\AdminBundle\Entity\Partner;
 
@@ -179,6 +181,44 @@ class ProductRepository extends BaseRepository
             ->orderBy('p.createdAt', 'DESC')
             ->getQuery()
             ->setMaxResults($max);
+
+        return $query->getResult();
+    }
+
+    /**
+     * Get All Product
+     *
+     * @return ArrayCollection
+     */
+    public function getAllProduct()
+    {
+        $query = $this->getRepository()->createQueryBuilder('p')
+            ->orderBy('p.createdAt', 'DESC')
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
+     * Get List For Autocomplete
+     *
+     * @param  string $keyword
+     * @param  integer      $limit
+     * @param  string $orderby
+     * @param  string $direct
+     * @return PaginatorService
+     */
+    public function getListForAutocomplete($keyword, $limit=15, $orderby='createdAt', $direct='DESC')
+    {
+        $query = $this->getRepository()->createQueryBuilder('p')
+            //->leftJoin('Q.listAnswers', 'A')
+            ->where('p.isActive = :isActive')
+            ->andWhere('p.upc LIKE :keyword OR p.title LIKE :keyword OR p.summary LIKE :keyword OR p.content LIKE :keyword')
+            ->setParameter('isActive', true)
+            ->setParameter('keyword', '%'.$keyword.'%')
+            ->orderBy('p.'.$orderby, $direct)
+            ->getQuery()
+            ->setMaxResults($limit);
 
         return $query->getResult();
     }

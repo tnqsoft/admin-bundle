@@ -1,0 +1,30 @@
+{% extends 'TNQSoftAdminBundle:Layout:layout.html.twig' %}
+{##############################################################################}
+{% block javascripts %}
+    {% include 'TNQSoftAdminBundle:Common:Ajax/product_js.html.twig'
+    with {
+    'input_holder': '#sale_productsId'
+    }
+    %}
+{% endblock %}
+{##############################################################################}
+{% block breadcrumb %}
+<ol class="breadcrumb">
+    <li><a href="{{ path('admin_dashboard') }}"><i class="fa fa-home"></i> Quản trị</a></li>
+    <li><a href="{{ path('admin_sale_list') }}">Khuyến mãi</a></li>
+    <li class="active">Thêm mới</li>
+</ol>
+{% endblock %}
+{##############################################################################}
+{% block body %}
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>Khuyến mãi
+                <small>thêm mới</small>
+            </h1>
+        </div>
+
+        {% include 'TNQSoftAdminBundle:Sale:_form.html.twig' with {'form': form} %}
+    </div>
+    <!-- /container -->
+{% endblock %}

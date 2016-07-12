@@ -1,0 +1,57 @@
+{% form_theme form 'TNQSoftAdminBundle:Form:form_layout.html.twig' %}
+
+{{ form_start(form) }}
+
+<p class="text-right">
+    {{ form_row(form.saveAndAdd) }}
+    {{ form_row(form.save) }}
+    <a href="{{ path('admin_sale_list') }}" class="btn btn-default">
+        <i class="fa fa-reply"></i>
+        Quay lại
+    </a>
+</p>
+
+{% include 'TNQSoftAdminBundle:Common:flash_message.html.twig' %}
+
+{{ form_errors(form) }}
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active">
+        <a href="#basic" aria-controls="basic" role="tab" data-toggle="tab">Thông tin cơ bản</a>
+    </li>
+    <li role="presentation">
+        <a href="#product" aria-controls="photo" role="tab" data-toggle="tab">Thêm Sản phẩm</a>
+    </li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content product-tab">
+    <div role="tabpanel" class="tab-pane active" id="basic">
+        {{ form_row(form.title) }}
+        {{ form_row(form.percentage) }}
+        {{ form_row(form.beginDate) }}
+        {{ form_row(form.endDate) }}
+        {{ form_row(form.description) }}
+
+        {{ form_row(form.isActive) }}
+
+        {% include 'TNQSoftAdminBundle:Common:Form/create_update.html.twig'
+        with {
+        'entity': entity
+        }
+        %}
+    </div><!-- /#basic -->
+
+    <div role="tabpanel" class="tab-pane" id="product">
+        {{ form_row(form.productsId) }}
+        {% include 'TNQSoftAdminBundle:Common:Ajax/product_html.html.twig'
+        with {
+            'table_des_title': 'Sản phẩm khuyến mãi.',
+            'listProducts': entity.products
+        }
+        %}
+    </div><!-- /#photo -->
+</div>
+
+{{ form_end(form) }}

@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use TNQSoft\AdminBundle\Entity\ProductImg;
 use TNQSoft\AdminBundle\Entity\ProductCategory;
 use TNQSoft\AdminBundle\Entity\Partner;
+use TNQSoft\AdminBundle\Entity\Sale;
 
 /**
  * @ORM\Table(name="product")
@@ -64,6 +65,16 @@ class Product
     private $isActive;
 
     /**
+     * @ORM\Column(name="is_new", type="boolean", nullable=false)
+     */
+    private $isNew;
+
+    /**
+     * @ORM\Column(name="is_special", type="boolean", nullable=false)
+     */
+    private $isSpecial;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
@@ -103,12 +114,28 @@ class Product
      */
     protected $viewNumber;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Sale", inversedBy="products")
+     * @ORM\JoinTable(name="product_sale")
+     */
+    protected $sales;
+
     public function __construct()
     {
         $this->isActive = true;
+        $this->isNew = false;
+        $this->isSpecial = false;
         $this->outOfStock = true;
         $this->listPhoto = new ArrayCollection();
+        $this->sales = new ArrayCollection();
         $this->price = 0;
+    }
+
+    public function __toString()
+    {
+        return '('.$this->getUpc().') '.$this->getTitle();
     }
 
     /**
@@ -285,6 +312,54 @@ class Product
     public function setIsActive($isActive)
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of Is New
+     *
+     * @return mixed
+     */
+    public function getIsNew()
+    {
+        return $this->isNew;
+    }
+
+    /**
+     * Set the value of Is New
+     *
+     * @param mixed isNew
+     *
+     * @return self
+     */
+    public function setIsNew($isNew)
+    {
+        $this->isNew = $isNew;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of Is Special
+     *
+     * @return mixed
+     */
+    public function getIsSpecial()
+    {
+        return $this->isSpecial;
+    }
+
+    /**
+     * Set the value of Is Special
+     *
+     * @param mixed isSpecial
+     *
+     * @return self
+     */
+    public function setIsSpecial($isSpecial)
+    {
+        $this->isSpecial = $isSpecial;
 
         return $this;
     }
@@ -491,5 +566,63 @@ class Product
         return null === $photoDefault
             ? null
             : $photoDefault->getWebPath();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getSales()
+    {
+        return $this->sales;
+    }
+
+    /**
+     * @param ArrayCollection $sales
+     * @return Product
+     */
+    public function setSales(ArrayCollection $sales)
+    {
+        $this->sales = $sales;
+        return $this;
+    }
+
+    /**
+     * Clear all Sales
+     *
+     * @return Product
+     */
+    public function clearSales() {
+        $this->sales->clear();
+
+        return $this;
+    }
+
+    /**
+     * Has Sale
+     *
+     * @param  Sale $sale
+     * @return booleans
+     */
+    public function hasSale(Sale $sale) {
+        return $this->sales->contains($sale);
+    }
+    
+    public function addSale(Sale $sale)
+    {
+        if ( !$this->hasSale($sale) ) {
+            $this->sales[] = $sale;
+            $sale->addProduct($this);
+        }
+    }
+
+    public function removeSaleWithProduct(Sale $sale)
+    {
+        $this->sales->removeElement($sale);
+        $sale->removeProduct($this);
+    }
+
+    public function removeSale(Sale $sale)
+    {
+        $this->sales->removeElement($sale);
     }
 }

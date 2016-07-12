@@ -1,44 +1,61 @@
-{% extends 'TNQSoftAdminBundle::layout.html.twig' %}
-
+{% extends 'TNQSoftAdminBundle:Layout:layout.html.twig' %}
+{##############################################################################}
+{% block breadcrumb %}
+<ol class="breadcrumb">
+    <li><a href="{{ path('admin_dashboard') }}"><i class="fa fa-home"></i> Quản trị</a></li>
+    <li class="active">Danh mục tin tức</li>
+</ol>
+{% endblock %}
+{##############################################################################}
 {% block body %}
 <div class="container-fluid">
     <div class="page-header">
       <h1>Danh mục tin <small>danh sách</small></h1>
     </div>
 
-    {% include 'TNQSoftAdminBundle:Partials:flash_message.html.twig' %}
+    {% include 'TNQSoftAdminBundle:Common:flash_message.html.twig' %}
 
     <p class="text-right">
         <a href="{{ path('admin_news_category_create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Thêm mới</a>
     </p>
 
     <div class="table-responsive">
-        <table class="table table-bordered table-hover">
+        <table class="table table-bordered table-hover table-striped">
             <thead>
-                <tr class="bg-primary">
-                    <th>#</th>
+                <tr class="bg-tr-head">
+                    <th width="1%" nowrap="" class="text-center"><i class="fa fa-lock"></i></th>
+                    <th width="1%" nowrap="">#</th>
                     <th>Tiêu đề</th>
                     <th>Slug</th>
-                    <th>Trạng thái</th>
-                    <th>Hành động</th>
+                    <th width="1%" nowrap="">Hành động</th>
                 </tr>
             </thead>
             <tbody>
                 {% for record in paginator %}
                 <tr>
-                    <td>{{ record.id }}</td>
-                    <td>{{ record.title }}</td>
-                    <td>{{ record.slug }}</td>
-                    <td>
-                        {% if record.isActive == 1 %}
-                        <a href="{{ path('admin_news_category_active', {'id': record.id, 'status': 'false' }) }}" class="btn btn-success btn-xs"><i class="fa fa-lock"></i> Hoạt động</a>
-                        {% else %}
-                        <a href="{{ path('admin_news_category_active', {'id': record.id, 'status': 'true' }) }}" class="btn btn-default btn-xs"><i class="fa fa-unlock"></i> Đang khóa</a>
-                        {% endif %}
+                    <td nowrap="">
+                        {% include 'TNQSoftAdminBundle:Common:Button/active.html.twig'
+                        with {
+                        'actionName': 'admin_news_category_active',
+                        'record': record
+                        }
+                        %}
                     </td>
+                    <td>{{ record.id }}</td>
                     <td>
-                        <a href="{{ path('admin_news_category_edit', {'id': record.id }) }}" class="btn btn-info btn-xs"><i class="fa fa-edit"></i></a>
-                        <a href="{{ path('admin_news_category_delete', {'id': record.id }) }}" class="btn btn-danger btn-xs btn-link-delete"><i class="fa fa-trash-o"></i></a>
+                        <a href="{{ path('admin_news_category_edit', {'id': record.id }) }}">
+                            {{ record.title }}
+                        </a>
+                    </td>
+                    <td>{{ record.slug }}</td>
+                    <td nowrap="">
+                        {% include 'TNQSoftAdminBundle:Common:Button/edit-delete.html.twig'
+                        with {
+                        'actionEdit': 'admin_news_category_edit',
+                        'actionDelete': 'admin_news_category_delete',
+                        'record': record
+                        }
+                        %}
                     </td>
                 </tr>
                 {% endfor %}

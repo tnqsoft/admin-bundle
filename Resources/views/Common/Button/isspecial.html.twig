@@ -1,0 +1,9 @@
+{% if record.isSpecial == 1 %}
+    <a href="{{ path(actionName, {'id': record.id, 'status': 'false' }) }}" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Hàng đặc biệt">
+        <i class="fa fa-check"></i>
+    </a>
+{% else %}
+    <a href="{{ path(actionName, {'id': record.id, 'status': 'true' }) }}" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Hàng bình thường">
+        <i class="fa fa-times"></i>
+    </a>
+{% endif %}

@@ -1,0 +1,13 @@
+{% stylesheets
+    'bundles/tnqsoftcommon/vendor/bootstrap/css/bootstrap-theme.min.css'
+    'bundles/tnqsoftadmin/css/fa-extends.css'
+    '@TNQSoftAdminBundle/Resources/public/vendor/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css'
+    '@TNQSoftAdminBundle/Resources/public/vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css'
+    'bundles/tnqsoftadmin/vendor/summernote/summernote.css'
+    'bundles/tnqsoftadmin/vendor/bootstrap-chosen/bootstrap-chosen.css'
+    '@TNQSoftAdminBundle/Resources/public/css/admin.css'
+    filter='cssrewrite'
+    output='css/compiled/admin-base.css'
+%}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="screen" />
+{% endstylesheets %}

@@ -1,58 +1,163 @@
-{% extends 'TNQSoftAdminBundle::layout.html.twig' %}
+{% extends 'TNQSoftAdminBundle:Layout:layout.html.twig' %}
+{##############################################################################}
+{% block breadcrumb %}
+<ol class="breadcrumb">
+    <li><a href="{{ path('admin_dashboard') }}"><i class="fa fa-home"></i> Quản trị</a></li>
+    <li class="active">Sản phẩm</li>
+</ol>
+{% endblock %}
+{##############################################################################}
+{% block javascripts %}
+<script>
+    $(document).on('click', '.table-product-price-text', function(e){
+        e.preventDefault();
+        var _parent = $(this).closest(".table-product-price");
+        var _input = '<input type="text" value="'+$(this).html()+'" class="form-control" data-old-value="'+$(this).html()+'" name="prices['+_parent.data('id')+']">';
+        _input += '<button type="button" class="btn btn-default btn-cancel"><i class="fa fa-times"></i></button>';
+        _parent.html(_input);
+    });
 
+    $(document).on('click', '.table-product-price .btn-cancel', function(e){
+        var _parent = $(this).closest(".table-product-price");
+        var _value = $('input', _parent).data('oldValue');
+        var _a = '<a href="#" class="table-product-price-text">'+_value+'</a>';
+        _parent.html(_a);
+    });
+
+    function checkAction() {
+        var _action = $('select[name="action"]').val();
+        if(_action === '') {
+            return false;
+        } else if(_action === 'update-price') {
+            return checkUpdatePrice();
+        }
+
+        return true;
+    }
+
+    function checkUpdatePrice() {
+        var _check = true;
+        $('.table-product-price .text-error').remove();
+        if($('.table-product-price input').length === 0) {
+            _check = false;
+        } else {
+            $('.table-product-price input').each(function(){
+                var _parent = $(this).closest(".table-product-price");
+                if($.trim($(this).val()) === '') {
+                    _parent.append('<div class="text-danger text-error"><small>Cần nhập giá trị.</small></div>');
+                    _check = false;
+                } else if(isNaN($.trim($(this).val())) === true) {
+                    _parent.append('<div class="text-danger text-error"><small>Chỉ nhập giá trị số.</small></div>');
+                    _check = false;
+                }
+            });
+        }
+
+        return _check;
+    }
+</script>
+{% endblock %}
+{##############################################################################}
 {% block body %}
 <div class="container-fluid">
     <div class="page-header">
       <h1>Sản phẩm <small>danh sách</small></h1>
     </div>
 
-    {% include 'TNQSoftAdminBundle:Partials:flash_message.html.twig' %}
+    {% include 'TNQSoftAdminBundle:Common:flash_message.html.twig' %}
 
     <p class="text-right">
         <a href="{{ path('admin_product_create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Thêm mới</a>
+        <a href="{{ path('admin_export_all_product') }}" class="btn btn-success"><i class="fa fa-cloud-download"></i> Xuất ra Excel</a>
+        <a href="{{ path('admin_product_import_excel') }}" class="btn btn-success"><i class="fa fa-cloud-upload"></i> Cập nhật từ Excel</a>
     </p>
 
+    <form action="" method="post" onsubmit="return checkAction();">
+
     <div class="table-responsive">
-        <table class="table table-bordered table-hover">
+        <table class="table table-bordered table-hover table-striped">
             <thead>
-                <tr class="bg-primary">
-                    <th>#</th>
-                    <th>&nbsp;</th>
+                <tr class="bg-tr-head">
+                    <th width="1%" nowrap="" class="text-center"><i class="fa fa-lock"></i></th>
+                    <th width="1%" nowrap="">#</th>
+                    <th width="1%" nowrap="">Ảnh SP</th>
                     <th>Sản phẩm</th>
                     <th>Danh mục</th>
-                    <th>Trạng thái</th>
-                    <th>Hành động</th>
+                    <th width="1%" nowrap="">Giá</th>
+                    <th width="1%" nowrap="">Hàng mới</th>
+                    <th width="1%" nowrap="">Đặc biệt</th>
+                    <th width="1%" nowrap="">Hành động</th>
                 </tr>
             </thead>
             <tbody>
                 {% for record in paginator %}
                 <tr>
-                    <td>{{ record.id }}</td>
-                    <td>
+                    <td nowrap="">
+                        {% include 'TNQSoftAdminBundle:Common:Button/active.html.twig'
+                        with {
+                        'actionName': 'admin_product_active',
+                        'record': record
+                        }
+                        %}
+                    </td>
+                    <td nowrap="">{{ record.id }}</td>
+                    <td nowrap="">
                         {% if record.webPath is not null %}
                             <img src="{{ asset(record.webPath)|imagine_filter('thumb_60x45') }}" class="thumbnail m-b-0"/>
                         {% else %}
-                            <img src="{{ asset('bundles/tnqsoftadmin/img/not-available.png')|imagine_filter('thumb_60x45') }}" class="thumbnail m-b-0"/>
+                            <img src="{{ asset('bundles/tnqsoftcommon/img/no-picture.png')|imagine_filter('thumb_60x45') }}" class="thumbnail m-b-0"/>
                         {% endif %}
                     </td>
-                    <td>{{ record.title }}</td>
+                    <td>
+                        <a href="{{ path('admin_product_edit', {'id': record.id }) }}">
+                        {{ record.title }}
+                        </a>
+                    </td>
                     <td>{{ record.category.title }}</td>
-                    <td>
-                        {% if record.isActive == 1 %}
-                        <a href="{{ path('admin_product_active', {'id': record.id, 'status': 'false' }) }}" class="btn btn-success btn-xs"><i class="fa fa-lock"></i> Hoạt động</a>
-                        {% else %}
-                        <a href="{{ path('admin_product_active', {'id': record.id, 'status': 'true' }) }}" class="btn btn-default btn-xs"><i class="fa fa-unlock"></i> Đang khóa</a>
-                        {% endif %}
+                    <td nowrap="" class="table-product-price" data-id="{{ record.id }}"><a href="#" class="table-product-price-text">{{ record.price }}</a></td>
+                    <td class="text-center">
+                        {% include 'TNQSoftAdminBundle:Common:Button/isnew.html.twig'
+                        with {
+                        'actionName': 'admin_product_set_new',
+                        'record': record
+                        }
+                        %}
                     </td>
-                    <td>
-                        <a href="{{ path('admin_product_edit', {'id': record.id }) }}" class="btn btn-info btn-xs"><i class="fa fa-edit"></i></a>
-                        <a href="{{ path('admin_product_delete', {'id': record.id }) }}" class="btn btn-danger btn-xs btn-link-delete"><i class="fa fa-trash-o"></i></a>
+                    <td class="text-center">
+                        {% include 'TNQSoftAdminBundle:Common:Button/isspecial.html.twig'
+                        with {
+                        'actionName': 'admin_product_set_special',
+                        'record': record
+                        }
+                        %}
+                    </td>
+                    <td nowrap="">
+                        {% include 'TNQSoftAdminBundle:Common:Button/edit-delete.html.twig'
+                        with {
+                        'actionEdit': 'admin_product_edit',
+                        'actionDelete': 'admin_product_delete',
+                        'record': record
+                        }
+                        %}
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div><!-- /.table-responsive -->
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            Hành động:
+            <select name="action" class="form-control form-control-inline">
+                <option value="">--Lựa chọn hành động--</option>
+                <option value="update-price">Cập nhật giá</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Thực hiện</button>
+        </div>
+    </div>
+
+    </form>
 
     {{ paginator.renderLinks()|raw }}
 </div> <!-- /container -->
