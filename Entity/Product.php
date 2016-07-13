@@ -625,4 +625,9 @@ class Product
     {
         $this->sales->removeElement($sale);
     }
+
+    public function getSaleOff()
+    {
+        
+    }
 }
