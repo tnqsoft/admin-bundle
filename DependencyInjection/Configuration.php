@@ -18,8 +18,17 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('tnqsoft_admin');
+        $rootNode = $treeBuilder->root('tnq_soft_admin');
 
+        $rootNode
+            ->children()
+                ->arrayNode('component_enabled')
+                    ->useAttributeAsKey('name')
+                        ->prototype('variable')->end()
+                    ->end()
+                ->end() //component_enabled
+            ->end()
+        ;
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
         // more information on that topic.

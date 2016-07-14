@@ -20,9 +20,28 @@ class TNQSoftAdminExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
+        $configs = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+
+        $this->remapParametersNamespaces($configs, $container, 'tnq_soft_admin');
+    }
+
+    /**
+     * Adds parameters to container.
+     *
+     * @param array            $configs     The gloabl config of this bundle.
+     * @param ContainerBuilder $container  The container for dependency injection.
+     * @param string            $namespaces Config namespaces to add as parameters in the container.
+     *
+     * @return void
+     */
+    protected function remapParametersNamespaces(array $configs, ContainerBuilder $container, $namespaces)
+    {
+        foreach ($configs as $key => $value)
+        {
+            $container->setParameter($namespaces.'.'.$key, $value);
+        }
     }
 }

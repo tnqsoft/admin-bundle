@@ -33,6 +33,23 @@ $ composer update
 ```
 
 ```
+/app/config/config.yml
+tnq_soft_admin:
+    component_enabled:
+        banner: true
+        menu: true
+        page: true
+        news_category: true
+        news: true
+        partner: true
+        product_category: true
+        product: true
+        sale: true
+        testimonial: true
+        photo: true
+```
+
+```
 /app/AppKernel.php
 
 $bundles = [
@@ -133,7 +150,7 @@ parameters:
 framework:
 	translator:      { fallbacks: ["%locale%"] }
 	serializer:      { enable_annotations: true }
-	
+
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
