@@ -119,6 +119,7 @@ class Product
      *
      * @ORM\ManyToMany(targetEntity="Sale", inversedBy="products")
      * @ORM\JoinTable(name="product_sale")
+     * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     protected $sales;
 
@@ -606,7 +607,12 @@ class Product
     public function hasSale(Sale $sale) {
         return $this->sales->contains($sale);
     }
-    
+
+    /**
+     * Add Sale
+     *
+     * @param Sale $sale
+     */
     public function addSale(Sale $sale)
     {
         if ( !$this->hasSale($sale) ) {
@@ -615,14 +621,73 @@ class Product
         }
     }
 
+    /**
+     * Remove Sale With Product
+     *
+     * @param  Sale $sale
+     */
     public function removeSaleWithProduct(Sale $sale)
     {
         $this->sales->removeElement($sale);
         $sale->removeProduct($this);
     }
 
+    /**
+     * Remove Sale
+     *
+     * @param  Sale $sale
+     */
     public function removeSale(Sale $sale)
     {
         $this->sales->removeElement($sale);
+    }
+
+    /**
+     * Get SaleOff by active Sale
+     *
+     * @return integer
+     */
+    public function getSaleOff()
+    {
+        $activeSaleOff = $this->getActiveSaleOff();
+        if(null !== $activeSaleOff) {
+            return $activeSaleOff->getPercentage();
+        }
+        return -1;
+    }
+
+    /**
+     * Get Price SaleOff by active Sale
+     *
+     * @return float
+     */
+    public function getPriceSaleOff()
+    {
+        if($this->getPrice() <= 0) {
+            return 0;
+        }
+        $activeSaleOff = $this->getActiveSaleOff();
+        if(null !== $activeSaleOff) {
+            $percentage = $activeSaleOff->getPercentage();
+            return $this->getPrice() - (($this->getPrice()*$percentage)/100);
+        }
+        return 0;
+    }
+
+    /**
+     * Get Active SaleOff By Begin and End date
+     *
+     * @return Sale
+     */
+    public function getActiveSaleOff()
+    {
+        $now = new \DateTime();
+        foreach($this->sales as $sale) {
+            if($sale->getBeginDate() <= $now && $sale->getEndDate() >= $now && $sale->getIsActive() === true) {
+                return $sale;
+            }
+        }
+
+        return null;
     }
 }

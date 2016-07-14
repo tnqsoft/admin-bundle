@@ -23,13 +23,18 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
+                        {% if componentEnabled.banner is defined and componentEnabled.banner == true %}
                         <li>
                             <a href="{{ path('admin_banner_list') }}">Banner</a>
                         </li>
                         <li role="separator" class="divider"></li>
+                        {% endif %}
+
+                        {% if componentEnabled.menu is defined and componentEnabled.menu == true %}
 						<li>
                             <a href="{{ path('admin_menu_list') }}">Quản lý Menu</a>
                         </li>
+                        {% endif %}
                         {#<li>#}
                             {#<a href="{{ path('admin_page_list') }}">Cấu hình</a>#}
                         {#</li>#}
@@ -46,20 +51,31 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
+                        {% if componentEnabled.page is defined and componentEnabled.page == true %}
                         <li>
                             <a href="{{ path('admin_page_list') }}">Trang tĩnh</a>
                         </li>
                         <li role="separator" class="divider"></li>
+                        {% endif %}
+
+                        {% if componentEnabled.news_category is defined and componentEnabled.news_category == true %}
                         <li>
                             <a href="{{ path('admin_news_category_list') }}">Danh mục tin</a>
                         </li>
+                        {% endif %}
+
+                        {% if componentEnabled.news is defined and componentEnabled.news == true %}
                         <li>
                             <a href="{{ path('admin_news_list') }}">Tin tức</a>
                         </li>
                         <li role="separator" class="divider"></li>
+                        {% endif %}
+
+                        {% if componentEnabled.photo is defined and componentEnabled.photo == true %}
                         <li>
                             <a href="{{ path('admin_photo_category_list') }}">Thư viện ảnh</a>
                         </li>
+                        {% endif %}
                         {#<li>
                             <a href="{{ path('admin_photo_list') }}">Thư viện ảnh</a>
                         </li>#}
@@ -70,22 +86,36 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
+                        {% if componentEnabled.partner is defined and componentEnabled.partner == true %}
                         <li>
                             <a href="{{ path('admin_partner_list') }}">Đối tác</a>
                         </li>
+                        {% endif %}
+
+                        {% if componentEnabled.product_category is defined and componentEnabled.product_category == true %}
                         <li>
                             <a href="{{ path('admin_product_category_list') }}">Danh mục hàng</a>
                         </li>
+                        {% endif %}
+
+                        {% if componentEnabled.product is defined and componentEnabled.product == true %}
                         <li>
                             <a href="{{ path('admin_product_list') }}">Sản phẩm</a>
                         </li>
+                        {% endif %}
+
+                        {% if componentEnabled.sale is defined and componentEnabled.sale == true %}
                         <li>
                             <a href="{{ path('admin_sale_list') }}">Khuyến mại</a>
                         </li>
                         <li role="separator" class="divider"></li>
+                        {% endif %}
+
+                        {% if componentEnabled.testimonial is defined and componentEnabled.testimonial == true %}
                         <li>
                             <a href="{{ path('admin_testimonial_list') }}">Ý kiến khách hàng</a>
                         </li>
+                        {% endif %}
                     </ul>
                 </li>
             </ul>

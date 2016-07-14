@@ -1,0 +1,8 @@
+{% if moduleEnabled is defined and moduleEnabled == true %}
+<li class="col-xs-4 col-sm-2">
+    <a href="{{ path(modulePath) }}">
+        <i class="{{ moduleIcon }}"></i>
+        <span>{{ moduleName }}</span>
+    </a>
+</li>
+{% endif %}
