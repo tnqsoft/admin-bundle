@@ -14,7 +14,11 @@
     </head>
 
     <body>
-        {% include 'TNQSoftAdminBundle:Partials:nav.html.twig' %}
+
+        {{ render(controller(
+        'TNQSoftAdminBundle:Widget:widgetNavTop',
+        {}
+        )) }}
 
         {% if block('breadcrumb') %}
             <div class="container-fluid">

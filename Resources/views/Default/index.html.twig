@@ -13,79 +13,122 @@
                             {#<span>Cấu hình</span>#}
                         {#</a>#}
                     {#</li>#}
-                    <li class="col-xs-4 col-sm-2">
-                        <a href="{{ path('admin_banner_list') }}">
-                            <i class="fa fa-extend-banner"></i>
-                            <span>Banner</span>
-                        </a>
-                    </li>
-                    <li class="col-xs-4 col-sm-2">
-                        <a href="{{ path('admin_menu_list') }}">
-                            <i class="fa fa-extend-menu"></i>
-                            <span>Menu</span>
-                        </a>
-                    </li>
-                    <li class="col-xs-4 col-sm-2">
-                        <a href="{{ path('admin_page_list') }}">
-                            <i class="fa fa-extend-website"></i>
-                            <span>Trang tĩnh</span>
-                        </a>
-                    </li>
-                    <li class="col-xs-4 col-sm-2">
-                        <a href="{{ path('admin_news_category_list') }}">
-                            <i class="fa fa-extend-tree"></i>
-                            <span>Danh mục Tin</span>
-                        </a>
-                    </li>
-                    <li class="col-xs-4 col-sm-2">
-                        <a href="{{ path('admin_news_list') }}">
-                            <i class="fa fa-extend-news"></i>
-                            <span>Tin tức</span>
-                        </a>
-                    </li>
+                    {% include 'TNQSoftAdminBundle:Common:Button/quickLink.html.twig'
+                    with {
+                        'moduleEnabled': componentEnabled.banner,
+                        'modulePath': 'admin_banner_list',
+                        'moduleIcon': 'fa fa-extend-banner',
+                        'moduleName': 'Banner',
+                    }
+                    %}
 
-                    <li class="col-xs-4 col-sm-2">
-                        <a href="{{ path('admin_partner_list') }}">
-                            <i class="fa fa-extend-partner"></i>
-                            <span>Đối tác</span>
-                        </a>
-                    </li>
-                    <li class="col-xs-4 col-sm-2">
-                        <a href="{{ path('admin_product_category_list') }}">
-                            <i class="fa fa-extend-tree"></i>
-                            <span>Danh mục SP</span>
-                        </a>
-                    </li>
-                    <li class="col-xs-4 col-sm-2">
-                        <a href="{{ path('admin_product_list') }}">
-                            <i class="fa fa-extend-product"></i>
-                            <span>Sản phẩm</span>
-                        </a>
-                    </li>
-                    <li class="col-xs-4 col-sm-2">
-                        <a href="{{ path('admin_sale_list') }}">
-                            <i class="fa fa-percent"></i>
-                            <span>Khuyến mại</span>
-                        </a>
-                    </li>
-                    <li class="col-xs-4 col-sm-2">
-                        <a href="{{ path('admin_testimonial_list') }}">
-                            <i class="fa fa-extend-comment"></i>
-                            <span>Phản hồi</span>
-                        </a>
-                    </li>
-                    <li class="col-xs-4 col-sm-2">
-                        <a href="{{ path('admin_photo_category_list') }}">
-                            <i class="fa fa-extend-camera"></i>
-                            <span>Photos</span>
-                        </a>
-                    </li>
-                    <li class="col-xs-4 col-sm-2">
-                        <a href="{{ path('admin_change_password') }}">
-                            <i class="fa fa-extend-key"></i>
-                            <span>Đổi mật khẩu</span>
-                        </a>
-                    </li>
+                    {% include 'TNQSoftAdminBundle:Common:Button/quickLink.html.twig'
+                    with {
+                        'moduleEnabled': componentEnabled.menu,
+                        'modulePath': 'admin_menu_list',
+                        'moduleIcon': 'fa fa-extend-menu',
+                        'moduleName': 'Menu',
+                    }
+                    %}
+
+                    {% include 'TNQSoftAdminBundle:Common:Button/quickLink.html.twig'
+                    with {
+                        'moduleEnabled': componentEnabled.page,
+                        'modulePath': 'admin_page_list',
+                        'moduleIcon': 'fa fa-extend-website',
+                        'moduleName': 'Trang tĩnh',
+                    }
+                    %}
+
+                    {% include 'TNQSoftAdminBundle:Common:Button/quickLink.html.twig'
+                    with {
+                        'moduleEnabled': componentEnabled.news_category,
+                        'modulePath': 'admin_news_category_list',
+                        'moduleIcon': 'fa fa-extend-tree',
+                        'moduleName': 'Danh mục Tin',
+                    }
+                    %}
+
+                    {% include 'TNQSoftAdminBundle:Common:Button/quickLink.html.twig'
+                    with {
+                        'moduleEnabled': componentEnabled.news,
+                        'modulePath': 'admin_news_list',
+                        'moduleIcon': 'fa fa-extend-news',
+                        'moduleName': 'Tin tức',
+                    }
+                    %}
+
+                    {% include 'TNQSoftAdminBundle:Common:Button/quickLink.html.twig'
+                    with {
+                        'moduleEnabled': componentEnabled.partner,
+                        'modulePath': 'admin_partner_list',
+                        'moduleIcon': 'fa fa-extend-partner',
+                        'moduleName': 'Đối tác',
+                    }
+                    %}
+
+                    {% include 'TNQSoftAdminBundle:Common:Button/quickLink.html.twig'
+                    with {
+                        'moduleEnabled': componentEnabled.product_category,
+                        'modulePath': 'admin_product_category_list',
+                        'moduleIcon': 'fa fa-extend-tree',
+                        'moduleName': 'Danh mục SP',
+                    }
+                    %}
+
+                    {% include 'TNQSoftAdminBundle:Common:Button/quickLink.html.twig'
+                    with {
+                        'moduleEnabled': componentEnabled.product,
+                        'modulePath': 'admin_product_list',
+                        'moduleIcon': 'fa fa-extend-product',
+                        'moduleName': 'Sản phẩm',
+                    }
+                    %}
+
+                    {% include 'TNQSoftAdminBundle:Common:Button/quickLink.html.twig'
+                    with {
+                        'moduleEnabled': componentEnabled.sale,
+                        'modulePath': 'admin_sale_list',
+                        'moduleIcon': 'fa fa-percent',
+                        'moduleName': 'Khuyến mại',
+                    }
+                    %}
+
+                    {% include 'TNQSoftAdminBundle:Common:Button/quickLink.html.twig'
+                    with {
+                        'moduleEnabled': componentEnabled.testimonial,
+                        'modulePath': 'admin_testimonial_list',
+                        'moduleIcon': 'fa fa-extend-comment',
+                        'moduleName': 'Phản hồi',
+                    }
+                    %}
+
+                    {% include 'TNQSoftAdminBundle:Common:Button/quickLink.html.twig'
+                    with {
+                        'moduleEnabled': componentEnabled.photo,
+                        'modulePath': 'admin_photo_category_list',
+                        'moduleIcon': 'fa fa-extend-camera',
+                        'moduleName': 'Photos',
+                    }
+                    %}
+
+                    {% include 'TNQSoftAdminBundle:Common:Button/quickLink.html.twig'
+                    with {
+                        'moduleEnabled': true,
+                        'modulePath': 'admin_change_password',
+                        'moduleIcon': 'fa fa-extend-key',
+                        'moduleName': 'Đổi mật khẩu',
+                    }
+                    %}
+
+                    {% include 'TNQSoftAdminBundle:Common:Button/quickLink.html.twig'
+                    with {
+                        'moduleEnabled': true,
+                        'modulePath': 'logout',
+                        'moduleIcon': 'fa fa-sign-out',
+                        'moduleName': 'Thoát',
+                    }
+                    %}
                 </ul>
             </div>
 
