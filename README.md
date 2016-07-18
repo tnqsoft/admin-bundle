@@ -326,4 +326,5 @@ php bin/console cache:clear --env=dev
 php bin/console assets:install --symlink web
 php bin/console assetic:dump --env=dev
 php bin/console doctrine:schema:update --force
+php bin/console tuanquynh:user:create admin 123 tuanquynh0508@gmail.com
 ```

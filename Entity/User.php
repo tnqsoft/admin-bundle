@@ -61,6 +61,14 @@ class User implements UserInterface, \Serializable
      */
     private $updatedAt;
 
+    /**
+     * @var UserGroup
+     *
+     * @ORM\ManyToOne(targetEntity="UserGroup", inversedBy="users")
+     * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
+     */
+    private $group;
+
     public function __construct()
     {
         $this->isActive = true;
@@ -232,6 +240,12 @@ class User implements UserInterface, \Serializable
         return array('ROLE_ADMIN');
     }
 
+    public function hasRole($role) {
+//        $role = strtoupper($role);
+//        $roles = $this->getRoles();
+//        return in_array($role, $roles, true);
+    }
+
     public function eraseCredentials()
     {
     }
@@ -258,5 +272,29 @@ class User implements UserInterface, \Serializable
             // see section on salt below
             // $this->salt
         ) = unserialize($serialized);
+    }
+
+    /**
+     * Get the value of Group
+     *
+     * @return UserGroup
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set the value of Group
+     *
+     * @param UserGroup $group
+     *
+     * @return self
+     */
+    public function setCategory(UserGroup $group)
+    {
+        $this->group = $group;
+
+        return $this;
     }
 }
