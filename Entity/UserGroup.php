@@ -56,10 +56,19 @@ class UserGroup
      */
     protected $users;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="UserRole", inversedBy="groups")
+     * @ORM\JoinTable(name="user_group_role")
+     */
+    protected $roles;
+
     public function __construct()
     {
         $this->isActive = true;
         $this->users = new ArrayCollection();
+        $this->roles = new ArrayCollection();
     }
 
     public function __toString()
@@ -237,5 +246,81 @@ class UserGroup
         $this->users->clear();
 
         return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * @param ArrayCollection $roles
+     * @return self
+     */
+    public function setRoles(ArrayCollection $roles)
+    {
+        $this->roles = $roles;
+        return $this;
+    }
+
+    /**
+     * Clear all Roles
+     *
+     * @return self
+     */
+    public function clearRoles() {
+        foreach ($this->roles as $role) {
+            $this->removeRoleWithGroup($role);
+        }
+        $this->roles->clear();
+
+        return $this;
+    }
+
+    /**
+     * Has Role
+     *
+     * @param  UserRole $role
+     * @return booleans
+     */
+    public function hasRole(UserRole $role) {
+        return $this->roles->contains($role);
+    }
+
+    /**
+     * Add Role
+     *
+     * @param UserRole $role
+     */
+    public function addRole(UserRole $role)
+    {
+        if ( !$this->hasRole($role) ) {
+            $this->roles[] = $role;
+            $role->addGroup($this);
+        }
+    }
+
+    /**
+     * Remove Role With Group
+     *
+     * @param  UserRole $role
+     */
+    public function removeRoleWithGroup(UserRole $role)
+    {
+        $this->roles->removeElement($role);
+        $role->removeGroup($this);
+    }
+
+    /**
+     * Remove Role
+     *
+     * @param  UserRole $role
+     */
+    public function removeRole(UserRole $role)
+    {
+        $this->roles->removeElement($role);
     }
 }

@@ -56,10 +56,18 @@ class UserRole
      */
     protected $permissions;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="UserGroup", mappedBy="roles")
+     */
+    protected $groups;
+
     public function __construct()
     {
         $this->isActive = true;
         $this->permissions = new ArrayCollection();
+        $this->groups = new ArrayCollection();
     }
 
     public function __toString()
@@ -237,5 +245,75 @@ class UserRole
         $this->permissions->clear();
 
         return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getGroups()
+    {
+        return $this->groups;
+    }
+
+    /**
+     * @param ArrayCollection $groups
+     * @return self
+     */
+    public function setProducts(ArrayCollection $groups)
+    {
+        $this->groups = $groups;
+        return $this;
+    }
+
+    /**
+     * Clear all Groups
+     *
+     * @return self
+     */
+    public function clearGroups() {
+        foreach ($this->groups as $group) {
+            $this->removeGroupWithRole($group);
+        }
+        $this->groups->clear();
+
+        return $this;
+    }
+
+    /**
+     * Has Group
+     *
+     * @param  UserGroup $group
+     * @return booleans
+     */
+    public function hasGroup(UserGroup $group) {
+        return $this->groups->contains($group);
+    }
+
+    /**
+     * @param UserGroup $group
+     */
+    public function addGroup(UserGroup $group)
+    {
+        if ( !$this->hasGroup($group) ) {
+            $this->groups[] = $group;
+            $group->addRole($this);
+        }
+    }
+
+    /**
+     * @param UserGroup $group
+     */
+    public function removeGroup(UserGroup $group)
+    {
+        $this->groups->removeElement($group);
+    }
+
+    /**
+     * @param UserGroup $group
+     */
+    public function removeGroupWithRole(UserGroup $group)
+    {
+        $this->groups->removeElement($group);
+        $group->removeRole($this);
     }
 }

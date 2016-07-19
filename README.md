@@ -33,23 +33,6 @@ $ composer update
 ```
 
 ```
-/app/config/config.yml
-tnq_soft_admin:
-    component_enabled:
-        banner: true
-        menu: true
-        page: true
-        news_category: true
-        news: true
-        partner: true
-        product_category: true
-        product: true
-        sale: true
-        testimonial: true
-        photo: true
-```
-
-```
 /app/AppKernel.php
 
 $bundles = [
@@ -319,6 +302,20 @@ liip_imagine:
             quality: 90
             filters:
                 thumbnail: { size: [600, 600], mode: outbound }
+
+tnq_soft_admin:
+    component_enabled:
+        banner: true
+        menu: true
+        page: true
+        news_category: true
+        news: true
+        partner: true
+        product_category: true
+        product: true
+        sale: true
+        testimonial: true
+        photo: true
 ```
 
 ```
