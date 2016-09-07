@@ -17,6 +17,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class User implements UserInterface, \Serializable
 {
     /**
+     * @var string
+     */
+    private $newPassword;
+
+    /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -291,10 +296,35 @@ class User implements UserInterface, \Serializable
      *
      * @return self
      */
-    public function setCategory(UserGroup $group)
+    public function setGroup(UserGroup $group)
     {
         $this->group = $group;
 
         return $this;
     }
+
+    /**
+     * Set the value of New Password
+     *
+     * @param string newPassword
+     *
+     * @return self
+     */
+    public function setNewPassword($newPassword)
+    {
+        $this->newPassword = $newPassword;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of New Password
+     *
+     * @return string
+     */
+    public function getNewPassword()
+    {
+        return $this->newPassword;
+    }
+
 }

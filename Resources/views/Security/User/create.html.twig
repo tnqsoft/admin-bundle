@@ -1,0 +1,22 @@
+{% extends 'TNQSoftAdminBundle:Layout:layout.html.twig' %}
+{##############################################################################}
+{% block breadcrumb %}
+<ol class="breadcrumb">
+    <li><a href="{{ path('admin_dashboard') }}"><i class="fa fa-home"></i> Quản trị</a></li>
+    <li><a href="{{ path('admin_user_list') }}">Người dùng</a></li>
+    <li class="active">Thêm mới</li>
+</ol>
+{% endblock %}
+{##############################################################################}
+{% block body %}
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>Người dùng
+                <small>thêm mới</small>
+            </h1>
+        </div>
+
+        {% include 'TNQSoftAdminBundle:Security:User/_form.html.twig' with {'form': form} %}
+    </div>
+    <!-- /container -->
+{% endblock %}

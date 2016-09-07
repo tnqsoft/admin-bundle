@@ -1,0 +1,66 @@
+{% extends 'TNQSoftAdminBundle:Layout:layout.html.twig' %}
+{##############################################################################}
+{% block breadcrumb %}
+<ol class="breadcrumb">
+    <li><a href="{{ path('admin_dashboard') }}"><i class="fa fa-home"></i> Quản trị</a></li>
+    <li class="active">Người dùng</li>
+</ol>
+{% endblock %}
+{##############################################################################}
+{% block body %}
+<div class="container-fluid">
+    <div class="page-header">
+      <h1>Người dùng <small>danh sách</small></h1>
+    </div>
+
+    {% include 'TNQSoftAdminBundle:Common:flash_message.html.twig' %}
+
+    <p class="text-right">
+        <a href="{{ path('admin_user_create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Thêm mới</a>
+    </p>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr class="bg-tr-head">
+                    <th width="1%" nowrap="" class="text-center"><i class="fa fa-lock"></i></th>
+                    <th width="1%" nowrap="">#</th>
+                    <th width="30%" nowrap="">Tài khoản</th>
+                    <th width="30%" nowrap="">Email</th>
+                    <th width="28%" nowrap="">Nhóm</th>
+                    <th width="10%" nowrap="">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in paginator %}
+                <tr>
+                    <td nowrap="">
+                        {% include 'TNQSoftAdminBundle:Common:Button/active.html.twig'
+                        with {
+                        'actionName': 'admin_user_active',
+                        'record': record
+                        }
+                        %}
+                    </td>
+                    <td>{{ record.id }}</td>
+                    <td>{{ record.username }}</td>
+                    <td>{{ record.email }}</td>
+                    <td>{{ record.group.title }}</td>
+                    <td nowrap="">
+                        {% include 'TNQSoftAdminBundle:Common:Button/edit-delete.html.twig'
+                        with {
+                        'actionEdit': 'admin_user_edit',
+                        'actionDelete': 'admin_user_delete',
+                        'record': record
+                        }
+                        %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div><!-- /.table-responsive -->
+
+    {{ paginator.renderLinks()|raw }}
+</div> <!-- /container -->
+{% endblock %}

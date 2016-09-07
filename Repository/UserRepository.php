@@ -26,4 +26,21 @@ class UserRepository extends BaseRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    /**
+     * Get list by pagination
+     *
+     * @param integer $page
+     * @param integer $limit
+     * @return PaginatorService
+     */
+    public function getListPagination($limit=15)
+    {
+        $dql = $this->getRepository()->createQueryBuilder('u')
+                //->leftJoin('Q.listAnswers', 'A')
+                ->orderBy('u.createdAt', 'ASC')
+                ->getQuery();
+
+        return new PaginatorService($dql, 1, $limit);
+    }
 }

@@ -6,12 +6,14 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
-class UserGroupType extends AbstractType
+class UserType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -19,20 +21,29 @@ class UserGroupType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $isNew = is_null($builder->getData()->getId());
+
         $builder
-            ->add('title', TextType::class, array(
-                'label' => 'Tiêu đề',
-                'attr' => array('placeholder' => 'Tiêu đề'),
+            ->add('username', TextType::class, array(
+                'label' => 'Tài khoản',
+                'attr' => array('placeholder' => 'Tài khoản'),
             ))
-            ->add('description', TextareaType::class, array(
-                'label' => 'Chú thích'
+            ->add('newPassword', PasswordType::class, array(
+                'label' => 'Mật khẩu',
+                'attr' => array(
+                    'placeholder' => 'Mật khẩu',
+                    'help'=> ($isNew === false)?'Để trống nếu không muốn cập nhật Mật khẩu.':''
+                ),
+                'required' => $isNew,
             ))
-            ->add('roles', null, array(
-                'label' => 'Quyền',
-                'placeholder' => 'Chọn quyền',
-                //'attr' => array('class' => 'chosen-select'),
-                'multiple' => true, // Multiple selection allowed
-                'expanded' => true, // Render as checkboxes
+            ->add('email', EmailType::class, array(
+                'label' => 'Email',
+                'attr' => array('placeholder' => 'Email'),
+            ))
+            ->add('group', null, array(
+                'label' => 'Nhóm người dùng',
+                'placeholder' => 'Chọn nhóm',
+                'attr' => array('class' => 'chosen-select'),
                 'required' => true,
             ))
             ->add('isActive', null, array(
@@ -59,7 +70,7 @@ class UserGroupType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'TNQSoft\AdminBundle\Entity\UserGroup',
+            'data_class' => 'TNQSoft\AdminBundle\Entity\User',
         ));
     }
     /**
@@ -67,6 +78,6 @@ class UserGroupType extends AbstractType
      */
     public function getName()
     {
-        return 'frmUserGroup';
+        return 'frmUser';
     }
 }

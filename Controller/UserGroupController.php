@@ -28,7 +28,7 @@ class UserGroupController extends Controller
         $paginator->setContainer($this->container);
         $paginator->setRequest($request);
 
-        return $this->render('TNQSoftAdminBundle:User:Group/index.html.twig',
+        return $this->render('TNQSoftAdminBundle:Security:Group/index.html.twig',
             array('paginator' => $paginator)
         );
     }
@@ -58,7 +58,7 @@ class UserGroupController extends Controller
             }
         }
 
-        return $this->render('TNQSoftAdminBundle:User:Group/create.html.twig',
+        return $this->render('TNQSoftAdminBundle:Security:Group/create.html.twig',
             array(
                 'entity' => $userGroup,
                 'form' => $form->createView(),
@@ -94,7 +94,7 @@ class UserGroupController extends Controller
             }
         }
 
-        return $this->render('TNQSoftAdminBundle:User:Group/edit.html.twig',
+        return $this->render('TNQSoftAdminBundle:Security:Group/edit.html.twig',
             array(
                 'entity' => $userGroup,
                 'form' => $form->createView(),
