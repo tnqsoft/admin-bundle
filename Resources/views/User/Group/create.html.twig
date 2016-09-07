@@ -1,0 +1,22 @@
+{% extends 'TNQSoftAdminBundle:Layout:layout.html.twig' %}
+{##############################################################################}
+{% block breadcrumb %}
+<ol class="breadcrumb">
+    <li><a href="{{ path('admin_dashboard') }}"><i class="fa fa-home"></i> Quản trị</a></li>
+    <li><a href="{{ path('admin_banner_list') }}">Banner</a></li>
+    <li class="active">Thêm mới</li>
+</ol>
+{% endblock %}
+{##############################################################################}
+{% block body %}
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>Banner
+                <small>thêm mới</small>
+            </h1>
+        </div>
+
+        {% include 'TNQSoftAdminBundle:Banner:_form.html.twig' with {'form': form} %}
+    </div>
+    <!-- /container -->
+{% endblock %}

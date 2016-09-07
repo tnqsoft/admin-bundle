@@ -15,6 +15,7 @@ parameters:
     tnqsoft_admin.repository.menu.class: TNQSoft\AdminBundle\Repository\MenuRepository
     tnqsoft_admin.repository.banner.class: TNQSoft\AdminBundle\Repository\BannerRepository
     tnqsoft_admin.repository.sale.class: TNQSoft\AdminBundle\Repository\SaleRepository
+    tnqsoft_admin.repository.user_group.class: TNQSoft\AdminBundle\Repository\UserGroupRepository
 
     tnqsoft_admin.service.base.class: TNQSoft\AdminBundle\Service\BaseService
     tnqsoft_admin.service.user.class: TNQSoft\AdminBundle\Service\UserService
@@ -74,6 +75,9 @@ services:
         parent: tnqsoft_common.repository.base
     tnqsoft_admin.repository.sale:
         class: %tnqsoft_admin.repository.sale.class%
+        parent: tnqsoft_common.repository.base
+    tnqsoft_admin.repository.user_group:
+        class: %tnqsoft_admin.repository.user_group.class%
         parent: tnqsoft_common.repository.base
 
     tnqsoft_admin.service.base:
