@@ -54,6 +54,10 @@ class UserController extends Controller
      */
     public function indexAction(Request $request)
     {
+        // $user = $this->get('security.token_storage')->getToken()->getUser();
+        // //var_dump($user->getRoles());die;
+        // var_dump($user->getGroup());die;
+
         $userRepository = $this->get('tnqsoft_admin.repository.user');
         $paginator = $userRepository->getListPagination();
         $paginator->setContainer($this->container);
@@ -77,7 +81,7 @@ class UserController extends Controller
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $user = $form->getData();
-                if($user->getNewPassword() !== '') {
+                if($user->getNewPassword() !== '' && $user->getNewPassword() !== null) {
                     $passwordEncoder = $this->get('security.password_encoder');
                     $password = $passwordEncoder->encodePassword($user, $user->getNewPassword());
                     $user->setPassword($password);
@@ -118,7 +122,7 @@ class UserController extends Controller
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $user = $form->getData();
-                if($user->getNewPassword() !== '') {
+                if($user->getNewPassword() !== '' && $user->getNewPassword() !== null) {
                     $passwordEncoder = $this->get('security.password_encoder');
                     $password = $passwordEncoder->encodePassword($user, $user->getNewPassword());
                     $user->setPassword($password);

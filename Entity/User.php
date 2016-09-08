@@ -5,7 +5,7 @@ namespace TNQSoft\AdminBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * @ORM\Table(name="users")
@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
  */
-class User implements UserInterface, \Serializable
+class User implements AdvancedUserInterface, \Serializable
 {
     /**
      * @var string
@@ -35,8 +35,7 @@ class User implements UserInterface, \Serializable
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $password;
 
@@ -242,6 +241,12 @@ class User implements UserInterface, \Serializable
 
     public function getRoles()
     {
+        // $roles = array();
+        // foreach ($this->group->getRoles() as $role) {
+        //     $roles[] = $role->getTitle();
+        // }
+        //
+        // return $roles;
         return array('ROLE_ADMIN');
     }
 
@@ -262,6 +267,7 @@ class User implements UserInterface, \Serializable
             $this->id,
             $this->username,
             $this->password,
+            //$this->group,
             // see section on salt below
             // $this->salt,
         ));
@@ -274,9 +280,30 @@ class User implements UserInterface, \Serializable
             $this->id,
             $this->username,
             $this->password,
+            //$this->group,
             // see section on salt below
             // $this->salt
         ) = unserialize($serialized);
+    }
+
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    public function isAccountNonLocked()
+    {
+        return true;
+    }
+
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    public function isEnabled()
+    {
+        return $this->isActive;
     }
 
     /**

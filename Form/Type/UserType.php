@@ -23,16 +23,24 @@ class UserType extends AbstractType
     {
         $isNew = is_null($builder->getData()->getId());
 
+        $attrForUsername = array(
+            'placeholder' => 'Tài khoản',
+        );
+        if($isNew === false) {
+            $attrForUsername['readonly'] = 'readonly';
+            //$attrForUsername['disabled'] = 'disabled';
+        }
+
         $builder
             ->add('username', TextType::class, array(
                 'label' => 'Tài khoản',
-                'attr' => array('placeholder' => 'Tài khoản'),
+                'attr' => $attrForUsername,
             ))
             ->add('newPassword', PasswordType::class, array(
                 'label' => 'Mật khẩu',
                 'attr' => array(
                     'placeholder' => 'Mật khẩu',
-                    'help'=> ($isNew === false)?'Để trống nếu không muốn cập nhật Mật khẩu.':''
+                    'help'=> ($isNew === false)?'Để trống nếu không muốn cập nhật Mật khẩu.':'',
                 ),
                 'required' => $isNew,
             ))
